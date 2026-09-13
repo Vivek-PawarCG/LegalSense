@@ -40,9 +40,62 @@ export function MarkdownResponse({ content, className = '' }: MarkdownResponsePr
       return
     }
 
+    // Skip stray single markdown symbols like '*' or '-' or '***'
+    if (trimmed === '*' || trimmed === '-' || trimmed === '•' || trimmed === '***' || trimmed === '---' || trimmed === '___') {
+      flushList(`list-flush-sep-${index}`)
+      return
+    }
+
+    // Disclaimer line detection (renders as small, muted font distinct from original response)
+    if (isDisclaimerText(trimmed)) {
+      flushList(`list-flush-disc-${index}`)
+      elements.push(
+        <div
+          key={`disclaimer-${index}`}
+          className="mt-3 pt-2 border-t border-slate-100 text-[10.5px] text-slate-400 font-normal leading-normal italic select-none [&_strong]:text-slate-500 [&_strong]:font-semibold [&_em]:text-slate-400"
+        >
+          {parseInlineMarkdown(trimmed)}
+        </div>
+      )
+      return
+    }
+
+    // Check if disclaimer is appended to the end of a sentence on the same line
+    const disclaimerSplit = trimmed.match(/^(.*?)(\s*(?:[\*\_\(\[]*\s*(?:Disclaimer:|Please note:\s*This is legal information|I am ClariLegal)[\s\S]*))$/i)
+    if (disclaimerSplit && disclaimerSplit[1].trim() && isDisclaimerText(disclaimerSplit[2])) {
+      flushList(`list-flush-inline-disc-${index}`)
+      elements.push(
+        <p key={`p-${index}`} className="text-xs leading-relaxed text-slate-800 my-1.5">
+          {parseInlineMarkdown(disclaimerSplit[1].trim())}
+        </p>
+      )
+      elements.push(
+        <div
+          key={`disclaimer-split-${index}`}
+          className="mt-3 pt-2 border-t border-slate-100 text-[10.5px] text-slate-400 font-normal leading-normal italic select-none [&_strong]:text-slate-500 [&_strong]:font-semibold [&_em]:text-slate-400"
+        >
+          {parseInlineMarkdown(disclaimerSplit[2].trim())}
+        </div>
+      )
+      return
+    }
+
     // Bullet point: "* ", "- ", "• "
     const bulletMatch = trimmed.match(/^[\*\-\•]\s+(.*)$/)
     if (bulletMatch) {
+      // If the bullet item itself is a disclaimer, render it as disclaimer instead of a bullet
+      if (isDisclaimerText(bulletMatch[1])) {
+        flushList(`list-flush-disc-bullet-${index}`)
+        elements.push(
+          <div
+            key={`disclaimer-${index}`}
+            className="mt-3 pt-2 border-t border-slate-100 text-[10.5px] text-slate-400 font-normal leading-normal italic select-none [&_strong]:text-slate-500 [&_strong]:font-semibold [&_em]:text-slate-400"
+          >
+            {parseInlineMarkdown(bulletMatch[1].trim())}
+          </div>
+        )
+        return
+      }
       currentList.push(bulletMatch[1])
       return
     }
@@ -171,3 +224,22 @@ function parseInlineMarkdown(text: string): React.ReactNode {
     </>
   )
 }
+
+function isDisclaimerText(text: string): boolean {
+  if (!text) return false
+  const clean = text.replace(/^[\*\_\(\[\>\s\-]+|[\*\_\)\]\>\s]+$/g, '').trim().toLowerCase()
+  return (
+    clean.startsWith('disclaimer:') ||
+    clean.startsWith('disclaimer -') ||
+    clean.startsWith('please note: this is legal information') ||
+    clean.startsWith('note: this is legal information') ||
+    clean.startsWith('please note: this response') ||
+    clean.startsWith('i am clarilegal') ||
+    clean.includes('does not constitute definitive legal representation') ||
+    clean.includes('does not constitute formal legal advice') ||
+    clean.includes('informational purposes only and does not constitute') ||
+    clean.includes('this is legal information, not definitive legal representation') ||
+    clean.includes('an ai legal analyst')
+  )
+}
+
