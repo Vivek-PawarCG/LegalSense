@@ -3,11 +3,11 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { GoogleGenAI } from '@google/genai'
 
-function legalSenseApiPlugin() {
+function clariLegalApiPlugin() {
   let env: Record<string, string> = {}
 
   return {
-    name: 'legalsense-api-plugin',
+    name: 'clarilegal-api-plugin',
     configResolved(config: any) {
       env = loadEnv(config.mode, process.cwd(), '')
     },
@@ -48,19 +48,19 @@ function legalSenseApiPlugin() {
                   const parts: any[] = []
                   if (mode === 'clause') {
                     parts.push({
-                      text: `You are LegalSense. Analyze the selected clause in plain English. Return strictly valid JSON:
+                      text: `You are ClariLegal. Analyze the selected clause in plain English. Return strictly valid JSON:
 {"title":"...","plainEnglish":"...","whyItMatters":"...","whoIsAffected":{"partyA":"...","partyB":"..."},"questionsToAsk":["...","..."],"risk":"Low"|"Medium"|"High","sourceReference":"..."}`
                     })
                   } else if (mode === 'compare') {
                     parts.push({
-                      text: `You are LegalSense. Compare these two contracts. Return strictly valid JSON:
+                      text: `You are ClariLegal. Compare these two contracts. Return strictly valid JSON:
 {"total":12,"unchanged":8,"modified":3,"added":1,"removed":0,"changedClauses":[{"title":"...","type":"Modified"|"Added"|"Removed","risk":"Low"|"Medium"|"High","documentA":"...","documentB":"...","explanation":"..."}]}`
                     })
                     if (dataA) parts.push({ text: 'DOCUMENT A:' }, { inlineData: { data: dataA, mimeType: mimeTypeA || 'application/pdf' } })
                     if (dataB) parts.push({ text: 'DOCUMENT B:' }, { inlineData: { data: dataB, mimeType: mimeTypeB || 'application/pdf' } })
                   } else {
                     parts.push({
-                      text: `You are LegalSense. Analyze this contract thoroughly. Return strictly valid JSON:
+                      text: `You are ClariLegal. Analyze this contract thoroughly. Return strictly valid JSON:
 {"summary":"Executive summary...","overallRisk":"Low"|"Medium"|"High","parties":["Party A","Party B"],"documentType":"Contract Type","effectiveDate":"Date","duration":"Term","keyTakeaways":["Point 1","Point 2","Point 3"],"risks":[{"category":"Category","level":"High"|"Medium"|"Low","detail":"..."}],"keyClauses":[{"id":"c1","section":"1.1","title":"...","quote":"...","plainEnglish":"...","whyItMatters":"...","whoIsAffected":{"partyA":"...","partyB":"..."},"questionsToAsk":["..."],"risk":"High","page":1}]}`
                     })
                     if (data) parts.push({ inlineData: { data, mimeType: mimeType || 'application/pdf' } })
@@ -127,7 +127,7 @@ function legalSenseApiPlugin() {
                     'gemini-1.5-flash',
                   ]
 
-                  const prompt = `You are LegalSense, an AI legal assistant. Answer in plain English, citing the document context if possible.\n\nDOCUMENT CONTEXT:\n${context || ''}\n\nQUESTION:\n${message}`
+                  const prompt = `You are ClariLegal, an AI legal assistant. Answer in plain English, citing the document context if possible.\n\nDOCUMENT CONTEXT:\n${context || ''}\n\nQUESTION:\n${message}`
 
                   for (const m of candidateModels) {
                     try {
@@ -150,7 +150,7 @@ function legalSenseApiPlugin() {
                 ok: true,
                 text: fallbackResponse,
                 interactionId: `local_chat_${Date.now()}`,
-                model: 'legalsense-assistant',
+                model: 'clarilegal-assistant',
               }))
             } catch (err: any) {
               res.statusCode = 500
@@ -304,9 +304,9 @@ function generateIntelligentChatResponse(message: string, context?: string) {
   if (m.includes('payment') || m.includes('fee') || m.includes('invoice') || m.includes('cost')) {
     return 'Regarding payment terms:\n\n• Terms: Invoices are typically Net-30 or Net-60 days from delivery.\n• Retainage: Verify if any milestone percentage is withheld pending final acceptance.\n• Late Fees: Look for statutory interest or standard 1.5% monthly late charges.'
   }
-  return `Regarding your question about "${message}":\n\nUnder this contract, terms should be evaluated based on bilateral fairness, defined risk boundaries, and clear governing law. Review the specific section in the document, and negotiate mutual caps or reciprocal notice periods where necessary. (LegalSense provides informational guidance, not formal legal representation).`
+  return `Regarding your question about "${message}":\n\nUnder this contract, terms should be evaluated based on bilateral fairness, defined risk boundaries, and clear governing law. Review the specific section in the document, and negotiate mutual caps or reciprocal notice periods where necessary. (ClariLegal provides informational guidance, not formal legal representation).`
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), legalSenseApiPlugin()]
+  plugins: [react(), tailwindcss(), clariLegalApiPlugin()]
 })

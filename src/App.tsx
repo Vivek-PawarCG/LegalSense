@@ -522,9 +522,9 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
           {/* Sidebar */}
           <aside className={`sidebar ${mobileNav ? 'open' : ''}`}>
             <div className="brand px-5 pt-5 pb-4 cursor-pointer" onClick={() => setScreen('home')}>
-              <img src="/logo.svg" alt="LegalSense Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
+              <img src="/logo.svg" alt="ClariLegal Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
               <div>
-                <div className="brand-name text-indigo-950 font-black tracking-tight">LegalSense</div>
+                <div className="brand-name text-indigo-950 font-black tracking-tight">ClariLegal</div>
                 <div className="brand-tag font-semibold">AI Contract Intelligence</div>
               </div>
             </div>
@@ -545,7 +545,7 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
                 <button
                   onClick={() => { setScreen('home'); setMobileNav(false); startTour() }}
                   className="nav-item text-indigo-600 font-bold hover:bg-indigo-50/80 transition-colors w-full"
-                  title="Take an interactive tour of LegalSense"
+                  title="Take an interactive tour of ClariLegal"
                 >
                   <Sparkles size={17} className="text-indigo-600" />
                   <span>Interactive Tour</span>
@@ -579,7 +579,7 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
             <div className="mobile-top">
               <button onClick={() => setMobileNav(v => !v)}><Menu size={22} /></button>
               <div className="brand-name flex items-center gap-2">
-                <img src="/logo.svg" alt="LegalSense Logo" className="w-7 h-7 rounded-full object-contain shrink-0" /> LegalSense
+                <img src="/logo.svg" alt="ClariLegal Logo" className="w-7 h-7 rounded-full object-contain shrink-0" /> ClariLegal
               </div>
             </div>
 
@@ -797,9 +797,9 @@ function LandingPage({
       {/* Navigation */}
       <header className="landing-header w-full">
         <div className="flex items-center gap-3.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/logo.svg" alt="LegalSense Logo" className="w-12 h-12 rounded-full object-contain shrink-0" />
+          <img src="/logo.svg" alt="ClariLegal Logo" className="w-12 h-12 rounded-full object-contain shrink-0" />
           <div>
-            <div className="brand-name text-xl font-black tracking-tight text-slate-900 leading-tight">LegalSense</div>
+            <div className="brand-name text-xl font-black tracking-tight text-slate-900 leading-tight">ClariLegal</div>
             <div className="text-xs text-slate-400 font-semibold tracking-wide">Understand. Compare. Decide.</div>
           </div>
         </div>
@@ -883,7 +883,7 @@ function LandingPage({
           <div className="landing-tagline">
             <Zap size={13} /> Interactive Sandbox
           </div>
-          <h2 className="landing-title">See LegalSense in action right now</h2>
+          <h2 className="landing-title">See ClariLegal in action right now</h2>
           <p className="landing-subtitle mx-auto">
             Click any clause below to experience how our AI extracts critical risks and converts predatory legalese into straightforward, actionable plain English.
           </p>
@@ -925,7 +925,7 @@ function LandingPage({
 
             <div className="sandbox-col">
               <div className="flex items-center gap-2 mb-3 text-indigo-700 font-bold text-xs">
-                <Sparkles size={16} /> LegalSense Plain English
+                <Sparkles size={16} /> ClariLegal Plain English
               </div>
               <div className="p-4 bg-indigo-50/60 border border-indigo-100 rounded-xl mb-4">
                 <p className="text-xs text-slate-800 leading-relaxed font-medium">
@@ -994,9 +994,9 @@ function LandingPage({
           <div className="landing-tagline">
             <Scale size={13} /> The Advantage
           </div>
-          <h2 className="landing-title">Why use LegalSense?</h2>
+          <h2 className="landing-title">Why use ClariLegal?</h2>
           <p className="landing-subtitle mx-auto">
-            See how LegalSense compares against traditional manual attorney review and DIY reading.
+            See how ClariLegal compares against traditional manual attorney review and DIY reading.
           </p>
         </div>
 
@@ -1007,7 +1007,7 @@ function LandingPage({
                 <th>Feature / Metric</th>
                 <th>Manual Attorney Review</th>
                 <th>DIY Manual Reading</th>
-                <th className="text-indigo-600 bg-indigo-50/70">LegalSense AI</th>
+                <th className="text-indigo-600 bg-indigo-50/70">ClariLegal AI</th>
               </tr>
             </thead>
             <tbody>
@@ -1054,31 +1054,31 @@ function LandingPage({
           </div>
           <h2 className="landing-title">Frequently Asked Questions</h2>
           <p className="landing-subtitle mx-auto">
-            Everything you need to know about LegalSense and our legal information platform.
+            Everything you need to know about ClariLegal and our legal information platform.
           </p>
         </div>
 
         <div className="faq-list max-w-3xl mx-auto">
           {[
             {
-              q: 'Is LegalSense a replacement for a qualified attorney?',
-              a: 'No. LegalSense is an AI-powered legal information assistant designed to help you quickly understand complex contract jargon, compare versions, and prepare questions for your legal counsel. It provides informational analysis, not formal legal representation.'
+              q: 'Is ClariLegal a replacement for a qualified attorney?',
+              a: 'No. ClariLegal is an AI-powered legal information assistant designed to help you quickly understand complex contract jargon, compare versions, and prepare questions for your legal counsel. It provides informational analysis, not formal legal representation.'
             },
             {
               q: 'What file formats and file sizes are supported?',
-              a: 'LegalSense supports standard PDF documents, Markdown (.md), and plain text (.txt) files up to 4 MB for instant online analysis. Our engine extracts text, sections, and structured clauses directly.'
+              a: 'ClariLegal supports standard PDF documents, Markdown (.md), and plain text (.txt) files up to 4 MB for instant online analysis. Our engine extracts text, sections, and structured clauses directly.'
             },
             {
               q: 'How does the Test User authentication work?',
               a: 'For hackathon judges and evaluators, the app is pre-configured with test credentials (test@test.com / test@123). You can click the 1-Click Autofill button on the sign-in modal to enter your session immediately.'
             },
             {
-              q: 'Can I test LegalSense if I don’t have a contract PDF on my laptop?',
-              a: 'Yes! LegalSense includes 1-click Sample Loaders for standard NDAs, Master Services Agreements, and Employment Contracts right on the dashboard. You can also import pre-built contract templates.'
+              q: 'Can I test ClariLegal if I don’t have a contract PDF on my laptop?',
+              a: 'Yes! ClariLegal includes 1-click Sample Loaders for standard NDAs, Master Services Agreements, and Employment Contracts right on the dashboard. You can also import pre-built contract templates.'
             },
             {
-              q: 'What AI model powers LegalSense?',
-              a: 'LegalSense is powered by Google’s Gemini 3.8 Flash model, with built-in fallbacks to Gemini 2.5 Flash and a client-side rule extraction engine to guarantee 100% uptime during high-volume judging.'
+              q: 'What AI model powers ClariLegal?',
+              a: 'ClariLegal is powered by Google’s Gemini 2.5 Flash model, with built-in fallbacks and a client-side rule extraction engine to guarantee 100% uptime during high-volume judging.'
             }
           ].map((item, idx) => (
             <div key={idx} className="faq-item">
@@ -1133,20 +1133,20 @@ function LandingPage({
       <footer className="border-t border-slate-200 bg-white py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src="/logo.svg" alt="LegalSense Logo" className="w-10 h-10 rounded-full object-contain shrink-0" />
+            <img src="/logo.svg" alt="ClariLegal Logo" className="w-10 h-10 rounded-full object-contain shrink-0" />
             <div>
-              <div className="font-extrabold text-sm text-slate-900">LegalSense</div>
+              <div className="font-extrabold text-sm text-slate-900">ClariLegal</div>
               <div className="text-[11px] text-slate-400">AI-Powered Legal Clarity</div>
             </div>
           </div>
 
           <div className="text-xs text-slate-500 text-center md:text-left max-w-md">
             <LockKeyhole size={13} className="inline mr-1 text-slate-400" />
-            LegalSense provides automated legal information, not attorney-client legal advice. Review critical commitments with licensed counsel.
+            ClariLegal provides automated legal information, not attorney-client legal advice. Review critical commitments with licensed counsel.
           </div>
 
           <div className="text-xs text-slate-400">
-            © 2026 LegalSense. Built for the Gemini Hackathon.
+            © 2026 ClariLegal. Built for the Gemini Hackathon.
           </div>
         </div>
       </footer>
@@ -1839,14 +1839,14 @@ Negotiation Questions:
 ${c.questionsToAsk.map(q => `  - ${q}`).join('\n')}
 `).join('\n')}
 
-Report Generated by LegalSense
+Report Generated by ClariLegal
 =====================================================`
 
     const blob = new Blob([reportText], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `${doc.name.replace(/\.[^/.]+$/, '')}_LegalSense_Report.txt`
+    a.download = `${doc.name.replace(/\.[^/.]+$/, '')}_ClariLegal_Report.txt`
     a.click()
     URL.revokeObjectURL(url)
     notify('Audit report downloaded successfully!', 'success')
@@ -3238,7 +3238,7 @@ function AskScreen({
           </div>
 
           <div className="ai-disclaimer py-1 px-2 text-[9.5px] flex-shrink-0 text-slate-400">
-            <LockKeyhole size={11} /> LegalSense provides informational explanations grounded in your document. Consult legal counsel for formal representation.
+            <LockKeyhole size={11} /> ClariLegal provides informational explanations grounded in your document. Consult legal counsel for formal representation.
           </div>
         </div>
       </div>
@@ -3387,7 +3387,7 @@ function SettingsScreen({
             <Sparkles size={16} className="text-indigo-600" /> Gemini API Key Configuration
           </div>
           <p className="text-xs text-slate-500 mb-4">
-            By default, LegalSense connects to the server-configured Gemini 3.8 Flash key in <code>.env.local</code>. You can optionally specify a custom key below.
+            By default, ClariLegal connects to the server-configured Gemini Flash key in <code>.env.local</code>. You can optionally specify a custom key below.
           </p>
 
           <div className="space-y-3">

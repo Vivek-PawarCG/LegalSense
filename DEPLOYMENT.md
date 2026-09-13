@@ -1,4 +1,4 @@
-# LegalSense deployment checklist
+# ClariLegal deployment checklist
 
 ## 1. Local
 ```bash

@@ -16,7 +16,7 @@ export function startTour(onComplete?: () => void) {
       overlayOpacity: 0.88, // Significantly darker focus (was 0.5 - 0.7)
       stagePadding: 8,
       stageRadius: 14,
-      popoverClass: 'legalsense-driver-popover',
+      popoverClass: 'clarilegal-driver-popover',
       nextBtnText: 'Next →',
       prevBtnText: '← Back',
       doneBtnText: 'Get Started 🚀',
@@ -60,8 +60,8 @@ export function startTour(onComplete?: () => void) {
         {
           element: '#tour-topbar',
           popover: {
-            title: '✨ Welcome to LegalSense!',
-            description: 'Your intelligent legal copilot for automated agreement analysis, risk evaluation, and clause translation.',
+            title: '✨ Welcome to ClariLegal!',
+            description: 'Your intelligent legal workspace for automated agreement analysis, risk evaluation, and clause translation.',
             side: 'bottom',
             align: 'start',
           },

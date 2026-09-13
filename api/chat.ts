@@ -9,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { message, context, customApiKey } = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {})
     if (!message) return res.status(400).json({ error: 'message is required' })
 
-    const prompt = `You are LegalSense, an expert AI legal assistant. Answer the user's question clearly, concisely, and in plain English.
+    const prompt = `You are ClariLegal, an expert AI legal analyst and contract assistant. Answer the user's question clearly, concisely, and in plain English.
 Ground your response strictly in the document context provided below. If the context does not contain enough information to answer, state so honestly.
 Always cite the specific section or clause if identifiable. Remind the user that this is legal information, not definitive legal representation.
 

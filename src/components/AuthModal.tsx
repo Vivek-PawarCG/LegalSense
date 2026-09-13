@@ -60,9 +60,9 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }:
         <div className="p-6 pb-4 bg-gradient-to-br from-indigo-50/70 to-slate-50 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <img src="/logo.svg" alt="LegalSense Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
+              <img src="/logo.svg" alt="ClariLegal Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
               <div>
-                <h3 className="text-base font-bold text-slate-900">LegalSense Account</h3>
+                <h3 className="text-base font-bold text-slate-900">ClariLegal Account</h3>
                 <p className="text-xs text-slate-500">Secure contract intelligence workspace</p>
               </div>
             </div>

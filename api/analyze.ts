@@ -15,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(413).json({ error: 'File is too large. Please keep uploads under 4 MB for this path.' })
     }
 
-    const system = `You are LegalSense, an elite AI legal-information assistant. You analyze contracts and explain complex legal terms in plain English.
+    const system = `You are ClariLegal, an elite AI legal-information assistant. You analyze contracts and explain complex legal terms in plain English.
 Never invent clauses, citations, dates, parties, or obligations. Base analysis strictly on the supplied document.
 Always respond in strictly valid JSON without codeblocks or enclosing formatting where requested. For risks, use only "Low", "Medium", or "High".`
 

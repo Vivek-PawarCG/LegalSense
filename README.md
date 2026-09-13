@@ -1,8 +1,8 @@
-# ⚖️ LegalSense — AI Legal Analyst & Contract Intelligence Workspace
+# ⚖️ ClariLegal — AI Legal Analyst & Contract Intelligence Workspace
 
 > **Empowering non-lawyers, founders, and professionals to demystify, compare, and navigate complex legal agreements with grounded GenAI intelligence.**
 
-![LegalSense Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+![ClariLegal Status](https://img.shields.io/badge/Status-Production%20Ready-success)
 ![Gemini AI](https://img.shields.io/badge/Powered%20By-Google%20Gemini%20Flash-blue?logo=google)
 ![TypeScript](https://img.shields.io/badge/Built%20With-TypeScript%20%26%20React%2019-3178c6?logo=typescript)
 ![Remotion](https://img.shields.io/badge/Motion-Remotion%204.0-ff0055?logo=react)
@@ -14,13 +14,13 @@
 
 Legal documents (NDAs, employment contracts, commercial leases, SaaS agreements) are deliberately dense, laden with archaic jargon, and asymmetric in risk. Everyday individuals and growing companies frequently sign away fundamental rights, accept uncapped indemnities, or face catastrophic termination penalties simply because hiring legal counsel for routine document reviews is prohibitively slow and expensive.
 
-**LegalSense** bridges this gap: a GenAI-powered AI Legal Analyst workspace that makes legal agreements transparent, accessible, and actionable. It translates complex legalese into plain English, performs automated risk scoring, and enables side-by-side contract comparisons with complete confidence.
+**ClariLegal** bridges this gap: a GenAI-powered AI Legal Analyst workspace that makes legal agreements transparent, accessible, and actionable. It translates complex legalese into plain English, performs automated risk scoring, and enables side-by-side contract comparisons with complete confidence.
 
 ---
 
 ### 🎯 Key Use Cases & Functional Capabilities
 
-| Core Use Case | LegalSense Feature | Technical & UX Mechanism |
+| Core Use Case | ClariLegal Feature | Technical & UX Mechanism |
 | :--- | :--- | :--- |
 | **1. Simplifying complex legal documents** | **Plain-English Translation Engine** | Converts dense statutory legalese into conversational layman summaries accompanied by dedicated *"Why It Matters"* impact cards. |
 | **2. Interactive document & PDF inspection** | **Split-Pane Viewer with Click-to-Highlight** | Displays original documents and rendered PDFs side-by-side with audited clauses; clicking any risk clause jumps to and highlights the exact clause in the document. |
@@ -35,12 +35,12 @@ Legal documents (NDAs, employment contracts, commercial leases, SaaS agreements)
 
 ## 🛡️ Responsible AI & Ethical Boundaries
 
-> **Note on Legal Scope:** LegalSense is engineered to provide informational transparency and analytical assistance, rather than replace professional legal counsel.
+> **Note on Legal Scope:** ClariLegal is engineered to provide informational transparency and analytical assistance, rather than replace professional legal counsel.
 
-LegalSense operates with strict ethical and regulatory boundaries:
+ClariLegal operates with strict ethical and regulatory boundaries:
 1. **Informational Assistance, Not Legal Advice**: Prominent notices are integrated across the Landing Page, Analysis Workspace, AI Chat, and Export Reports.
 2. **Automated Attorney Escalation**: High-risk clauses automatically trigger guidance recommending escalation to a certified attorney.
-3. **Counsel Enablement Tool**: Rather than offering unauthorized legal practice, LegalSense equips clients with specific citations, questions, and risk profiles to maximize attorney consultation efficiency.
+3. **Counsel Enablement Tool**: Rather than offering unauthorized legal practice, ClariLegal equips clients with specific citations, questions, and risk profiles to maximize attorney consultation efficiency.
 
 ---
 
@@ -73,7 +73,7 @@ LegalSense operates with strict ethical and regulatory boundaries:
 
 ```
    ┌─────────────────────────────────────────────────────────────┐
-   │                     LegalSense Frontend                     │
+   │                     ClariLegal Frontend                     │
    │  React 19 + TypeScript + Vite + Tailwind CSS 4.0 + Lucide   │
    └───────────────┬─────────────────────────────┬───────────────┘
                    │                             │
@@ -126,7 +126,7 @@ GEMINI_API_KEY=your_google_ai_studio_api_key
 GEMINI_MODEL=gemini-2.5-flash
 ```
 
-> **Demo Mode**: LegalSense includes pre-analyzed sample agreements (Commercial Lease, Vendor NDA, Senior Employment Contract) so you can evaluate the complete user flow without needing an active API key immediately.
+> **Demo Mode**: ClariLegal includes pre-analyzed sample agreements (Commercial Lease, Vendor NDA, Senior Employment Contract) so you can evaluate the complete user flow without needing an active API key immediately.
 
 ### 4. Run the Development Server
 ```bash
@@ -157,7 +157,7 @@ legalsense/
 ├── src/
 │   ├── components/                # Modular UI components
 │   │   ├── AuthModal.tsx          # Workspace login & account modal
-│   │   ├── Logo.tsx               # Reusable LegalSense branding component
+│   │   ├── Logo.tsx               # Reusable ClariLegal branding component
 │   │   ├── MarkdownResponse.tsx   # Markdown & citation renderer for AI responses
 │   │   ├── RemotionAnalysisModal.tsx  # Cinematic real-time contract scanner
 │   │   ├── RemotionDemoModal.tsx  # Interactive product walkthrough video modal
@@ -187,7 +187,7 @@ legalsense/
 
 ## ⚖️ Legal Disclaimer
 
-*LegalSense is an artificial intelligence-assisted legal document intelligence and productivity tool designed strictly for informational and navigational purposes. LegalSense is NOT a law firm and does NOT provide legal advice, formal representation, or attorney-client privileged relationships. Always review important contracts and legal commitments with a licensed attorney in your jurisdiction.*
+*ClariLegal is an artificial intelligence-assisted legal document intelligence and productivity tool designed strictly for informational and navigational purposes. ClariLegal is NOT a law firm and does NOT provide legal advice, formal representation, or attorney-client privileged relationships. Always review important contracts and legal commitments with a licensed attorney in your jurisdiction.*
 
 ---
 

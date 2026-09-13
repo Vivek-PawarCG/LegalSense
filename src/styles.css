@@ -75,7 +75,7 @@
   .sandbox-col.left{border-right:0;border-bottom:1px solid #f1f5f9}
 }
 
-/* Driver.js Custom Styling for LegalSense */
+/* Driver.js Custom Styling for ClariLegal */
 .driver-overlay {
   backdrop-filter: none !important;
   filter: none !important;
@@ -96,6 +96,7 @@
   transition: all 0.2s ease !important;
 }
 
+.driver-popover.clarilegal-driver-popover,
 .driver-popover.legalsense-driver-popover {
   background: #ffffff !important;
   color: #0f172a !important;
@@ -107,6 +108,7 @@
   font-family: inherit !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-title,
 .driver-popover.legalsense-driver-popover .driver-popover-title {
   font-size: 15px !important;
   font-weight: 800 !important;
@@ -115,6 +117,7 @@
   letter-spacing: -0.01em !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-description,
 .driver-popover.legalsense-driver-popover .driver-popover-description {
   font-size: 12.5px !important;
   color: #475569 !important;
@@ -122,6 +125,7 @@
   margin-bottom: 14px !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-footer,
 .driver-popover.legalsense-driver-popover .driver-popover-footer {
   display: flex !important;
   align-items: center !important;
@@ -131,6 +135,7 @@
   border-top: 1px solid #f1f5f9 !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-progress-text,
 .driver-popover.legalsense-driver-popover .driver-popover-progress-text {
   font-size: 11px !important;
   font-weight: 700 !important;
@@ -140,6 +145,7 @@
   border-radius: 6px !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-next-btn,
 .driver-popover.legalsense-driver-popover .driver-popover-next-btn {
   background: #4f46e5 !important;
   color: #ffffff !important;
@@ -153,11 +159,13 @@
   transition: all 0.15s ease !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-next-btn:hover,
 .driver-popover.legalsense-driver-popover .driver-popover-next-btn:hover {
   background: #4338ca !important;
   transform: translateY(-1px) !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-prev-btn,
 .driver-popover.legalsense-driver-popover .driver-popover-prev-btn {
   background: #f1f5f9 !important;
   color: #475569 !important;
@@ -171,11 +179,13 @@
   margin-right: 6px !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-prev-btn:hover,
 .driver-popover.legalsense-driver-popover .driver-popover-prev-btn:hover {
   background: #e2e8f0 !important;
   color: #1e293b !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-close-btn,
 .driver-popover.legalsense-driver-popover .driver-popover-close-btn {
   color: #94a3b8 !important;
   font-size: 18px !important;
@@ -183,6 +193,7 @@
   right: 12px !important;
 }
 
+.driver-popover.clarilegal-driver-popover .driver-popover-close-btn:hover,
 .driver-popover.legalsense-driver-popover .driver-popover-close-btn:hover {
   color: #ef4444 !important;
 }

@@ -102,7 +102,7 @@ function WalkthroughSlide({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 11, color: '#64748b' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <Scale size={13} className="text-indigo-400" />
-          <span>LegalSense AI • Smart Legal Assistant</span>
+          <span>ClariLegal AI • AI Legal Analyst</span>
         </div>
         <div style={{ color: '#818cf8', fontWeight: 700 }}>
           Interactive Video Walkthrough
@@ -242,7 +242,7 @@ export function ProductWalkthroughComposition() {
             </div>
           </div>
           <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: 14, borderRadius: 12 }}>
-            <div style={{ fontSize: 10, color: '#818cf8', fontWeight: 800 }}>LEGALSENSE COPILOT:</div>
+            <div style={{ fontSize: 10, color: '#818cf8', fontWeight: 800 }}>CLARILEGAL ANALYST:</div>
             <p style={{ fontSize: 12, color: '#e2e8f0', lineHeight: 1.6, margin: '4px 0 0' }}>
               Under Section 14.1, they must give 45 days written notice and pay for all deliverables completed up to the termination date. (Source: Section 14.1, Page 15)
             </p>
