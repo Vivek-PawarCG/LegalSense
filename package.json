@@ -1,0 +1,31 @@
+{
+  "name": "legalsense",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "@remotion/player": "^4.0.524",
+    "@tailwindcss/vite": "latest",
+    "@vitejs/plugin-react": "latest",
+    "clsx": "latest",
+    "driver.js": "^1.8.0",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "remotion": "^4.0.524",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vercel/node": "latest"
+  }
+}

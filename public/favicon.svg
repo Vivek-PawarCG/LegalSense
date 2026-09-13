@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="lsIndigoDeep" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="45%" stop-color="#312e81" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+
+    <linearGradient id="lsIndigoPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#312e81" />
+      <stop offset="50%" stop-color="#4338ca" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+
+    <linearGradient id="lsBgDisc" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8faff" />
+    </linearGradient>
+
+    <clipPath id="roundDiscClip">
+      <circle cx="256" cy="256" r="248" />
+    </clipPath>
+
+    <g id="filigree-unit">
+      <path d="M 256,40 C 276,49 292,64 294,80 C 289,92 274,93 264,84 C 252,73 261,56 276,57" 
+            fill="none" stroke="url(#lsIndigoPrimary)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 256,40 C 236,49 220,64 218,80 C 223,92 238,93 248,84 C 260,73 251,56 236,57" 
+            fill="none" stroke="url(#lsIndigoPrimary)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="256" cy="58" r="4.5" fill="#4f46e5" />
+      <circle cx="272" cy="78" r="3" fill="#4338ca" />
+      <circle cx="240" cy="78" r="3" fill="#4338ca" />
+    </g>
+  </defs>
+
+  <g clip-path="url(#roundDiscClip)">
+    <circle cx="256" cy="256" r="248" fill="url(#lsBgDisc)" />
+    <circle cx="256" cy="256" r="238" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="15" />
+    <circle cx="256" cy="256" r="222" fill="none" stroke="#4338ca" stroke-width="3.5" opacity="0.6" />
+    <circle cx="256" cy="256" r="166" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="7" />
+    <circle cx="256" cy="256" r="156" fill="none" stroke="#6366f1" stroke-width="2.5" opacity="0.7" />
+
+    <g id="filigree-ring">
+      <use href="#filigree-unit" transform="rotate(0 256 256)" />
+      <use href="#filigree-unit" transform="rotate(30 256 256)" />
+      <use href="#filigree-unit" transform="rotate(60 256 256)" />
+      <use href="#filigree-unit" transform="rotate(90 256 256)" />
+      <use href="#filigree-unit" transform="rotate(120 256 256)" />
+      <use href="#filigree-unit" transform="rotate(150 256 256)" />
+      <use href="#filigree-unit" transform="rotate(180 256 256)" />
+      <use href="#filigree-unit" transform="rotate(210 256 256)" />
+      <use href="#filigree-unit" transform="rotate(240 256 256)" />
+      <use href="#filigree-unit" transform="rotate(270 256 256)" />
+      <use href="#filigree-unit" transform="rotate(300 256 256)" />
+      <use href="#filigree-unit" transform="rotate(330 256 256)" />
+    </g>
+
+    <path d="M 256 104 C 260 116, 267 127, 269 137 C 265 144, 259 148, 256 150 C 253 148, 247 144, 243 137 C 245 127, 252 116, 256 104 Z" 
+          fill="url(#lsIndigoDeep)" stroke="#1e1b4b" stroke-width="2" />
+    <circle cx="256" cy="136" r="3" fill="#ffffff" />
+
+    <circle cx="256" cy="164" r="13" fill="#ffffff" stroke="url(#lsIndigoDeep)" stroke-width="6" />
+    <circle cx="256" cy="164" r="5" fill="#4338ca" />
+    <rect x="249" y="174" width="14" height="8" rx="2.5" fill="url(#lsIndigoDeep)" />
+
+    <path d="M 251.5 182 L 248 344 L 264 344 L 260.5 182 Z" fill="url(#lsIndigoDeep)" />
+    <line x1="256" y1="184" x2="256" y2="340" stroke="#ffffff" stroke-width="2" opacity="0.5" />
+
+    <path d="M 244 344 L 268 344 L 278 355 L 234 355 Z" fill="url(#lsIndigoDeep)" />
+    <rect x="220" y="355" width="72" height="13" rx="3.5" fill="url(#lsIndigoDeep)" stroke="#1e1b4b" stroke-width="1.5" />
+    <rect x="210" y="367" width="92" height="9" rx="4.5" fill="url(#lsIndigoDeep)" />
+
+    <path d="M 154 188 C 182 172, 224 158, 256 158 C 288 158, 330 172, 358 188" 
+          fill="none" stroke="url(#lsIndigoDeep)" stroke-width="9" stroke-linecap="round" />
+    <path d="M 158 194 C 188 183, 225 170, 256 170 C 287 170, 324 183, 354 194" 
+          fill="none" stroke="url(#lsIndigoPrimary)" stroke-width="4.5" stroke-linecap="round" />
+
+    <path d="M 256 197 C 242 197 230 189 226 177" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 256 197 C 270 197 282 189 286 177" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="4" stroke-linecap="round"/>
+
+    <circle cx="154" cy="188" r="9.5" fill="#ffffff" stroke="url(#lsIndigoDeep)" stroke-width="5.5" />
+    <circle cx="358" cy="188" r="9.5" fill="#ffffff" stroke="url(#lsIndigoDeep)" stroke-width="5.5" />
+
+    <line x1="154" y1="196" x2="104" y2="284" stroke="url(#lsIndigoDeep)" stroke-width="4.5" stroke-linecap="round" />
+    <line x1="154" y1="196" x2="154" y2="284" stroke="url(#lsIndigoPrimary)" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+    <line x1="154" y1="196" x2="204" y2="284" stroke="url(#lsIndigoDeep)" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 98 284 L 210 284 C 202 318, 106 318, 98 284 Z" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="6.5" stroke-linejoin="round" />
+    <path d="M 102 284 L 206 284" stroke="url(#lsIndigoDeep)" stroke-width="5.5" stroke-linecap="round" />
+
+    <line x1="358" y1="196" x2="308" y2="284" stroke="url(#lsIndigoDeep)" stroke-width="4.5" stroke-linecap="round" />
+    <line x1="358" y1="196" x2="358" y2="284" stroke="url(#lsIndigoPrimary)" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+    <line x1="358" y1="196" x2="408" y2="284" stroke="url(#lsIndigoDeep)" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 302 284 L 414 284 C 406 318, 310 318, 302 284 Z" fill="none" stroke="url(#lsIndigoDeep)" stroke-width="6.5" stroke-linejoin="round" />
+    <path d="M 306 284 L 410 284" stroke="url(#lsIndigoDeep)" stroke-width="5.5" stroke-linecap="round" />
+  </g>
+</svg>
