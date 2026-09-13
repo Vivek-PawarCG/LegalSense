@@ -3155,12 +3155,20 @@ function AskScreen({
                   </div>
                   <div className="msg-bubble">
                     {m.role === 'assistant' ? (
-                      <MarkdownResponse content={m.text} />
+                      <>
+                        <MarkdownResponse content={m.text} />
+                        {m.sourceReference && (
+                          <div className="source-note">Source: {m.sourceReference}</div>
+                        )}
+                        <div className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] text-slate-400 leading-normal flex items-start gap-1.5 select-none">
+                          <LockKeyhole size={10} className="shrink-0 mt-0.5 text-slate-400" />
+                          <span>
+                            <strong className="text-slate-500 font-medium">Disclaimer:</strong> I am ClariLegal, an AI legal analyst. This response is provided for informational purposes only and does not constitute definitive legal representation or formal legal advice.
+                          </span>
+                        </div>
+                      </>
                     ) : (
                       <div className="text-xs leading-relaxed whitespace-pre-wrap">{m.text}</div>
-                    )}
-                    {m.sourceReference && (
-                      <div className="source-note">Source: {m.sourceReference}</div>
                     )}
                   </div>
                 </div>
@@ -3238,7 +3246,7 @@ function AskScreen({
           </div>
 
           <div className="ai-disclaimer py-1 px-2 text-[9.5px] flex-shrink-0 text-slate-400">
-            <LockKeyhole size={11} /> ClariLegal provides informational explanations grounded in your document. Consult legal counsel for formal representation.
+            <LockKeyhole size={11} /> Disclaimer: I am ClariLegal, an AI legal analyst. This response is provided for informational purposes only and does not constitute definitive legal representation or formal legal advice.
           </div>
         </div>
       </div>
