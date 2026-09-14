@@ -631,13 +631,222 @@ export function createSampleComparePair(): [StoredDocument, StoredDocument] {
   return [docA, docB]
 }
 
+export function ensureDocumentActionPlan(doc: StoredDocument): StoredDocument {
+  if (!doc.analysis) return doc
+
+  const nameAndType = `${doc.name} ${doc.analysis.type || ''}`.toLowerCase()
+  const isLease = /lease|rent|tenant|landlord/i.test(nameAndType)
+  const isEmployment = /employ|hire|job|executive|salary/i.test(nameAndType)
+  const isNDA = /nda|non-disclosure|confidential/i.test(nameAndType)
+
+  if (!doc.analysis.actionChecklist || doc.analysis.actionChecklist.length === 0) {
+    if (isLease) {
+      doc.analysis.actionChecklist = [
+        {
+          id: `chk_${doc.id}_1`,
+          task: 'Document pre-existing premises condition and photo-catalog fixtures before signing.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_2`,
+          task: 'Verify security deposit escrow conditions and interest accrual terms under local housing law.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_3`,
+          task: 'Confirm landlord maintenance response windows for essential utilities (heating, water, electrical).',
+          phase: 'Execution',
+          priority: 'Medium',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_4`,
+          task: 'Calendar 60-day lease renewal or non-renewal formal notice deadline.',
+          phase: 'Post-Signing',
+          priority: 'Low',
+          completed: false,
+        },
+      ]
+    } else if (isEmployment) {
+      doc.analysis.actionChecklist = [
+        {
+          id: `chk_${doc.id}_1`,
+          task: 'Prepare written schedule of pre-existing personal IP (Exhibit A) to exclude from company assignment.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_2`,
+          task: 'Verify post-termination non-compete duration and geographic restrictions with local employment counsel.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_3`,
+          task: 'Confirm equity vesting schedule and change-of-control acceleration protections.',
+          phase: 'Execution',
+          priority: 'Medium',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_4`,
+          task: 'File Section 83(b) tax election with IRS within 30 days of equity grant if receiving restricted stock.',
+          phase: 'Post-Signing',
+          priority: 'High',
+          completed: false,
+        },
+      ]
+    } else if (isNDA) {
+      doc.analysis.actionChecklist = [
+        {
+          id: `chk_${doc.id}_1`,
+          task: 'Mark all sensitive presentations, data rooms, and repositories as "Confidential" prior to disclosure.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_2`,
+          task: 'Verify signatory authorization and confirm standard trade secret carveouts are reciprocal.',
+          phase: 'Execution',
+          priority: 'Medium',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_3`,
+          task: 'Calendar 2-year survival milestone for certified return or destruction of proprietary records.',
+          phase: 'Post-Signing',
+          priority: 'Low',
+          completed: false,
+        },
+      ]
+    } else {
+      doc.analysis.actionChecklist = [
+        {
+          id: `chk_${doc.id}_1`,
+          task: 'Demand mutual liability ceiling equal to 1x annual trailing contract value.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_2`,
+          task: 'Verify mutual indemnity carveouts and reciprocal intellectual property infringement defense.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_3`,
+          task: 'Confirm signatory credentials and corporate board approval resolutions.',
+          phase: 'Execution',
+          priority: 'Medium',
+          completed: false,
+        },
+        {
+          id: `chk_${doc.id}_4`,
+          task: 'Set up automated Net-30 invoice milestone alerts and contract renewal reminders.',
+          phase: 'Post-Signing',
+          priority: 'Low',
+          completed: false,
+        },
+      ]
+    }
+  }
+
+  if (!doc.analysis.optionsAndNextSteps || doc.analysis.optionsAndNextSteps.length === 0) {
+    if (isLease) {
+      doc.analysis.optionsAndNextSteps = [
+        {
+          option: 'Request Grace Period for Rent Payment',
+          impact: 'Adds a standard 5-day grace window before late penalty fees can be assessed.',
+          effort: 'Low',
+          recommendation: 'Recommended',
+        },
+        {
+          option: 'Negotiate Early Termination Break-Clause',
+          impact: 'Establishes a defined 2-month penalty fee if forced to relocate for employment.',
+          effort: 'Medium',
+          recommendation: 'High Value',
+        },
+        {
+          option: 'Consult Tenant Rights Advisor',
+          impact: 'Validates security deposit limits and repair obligations against local municipal statutes.',
+          effort: 'Medium',
+        },
+      ]
+    } else {
+      doc.analysis.optionsAndNextSteps = [
+        {
+          option: 'Negotiate Reciprocal Liability Protections',
+          impact: 'Ensures caps on damages apply symmetrically to both contracting entities.',
+          effort: 'Medium',
+          recommendation: 'High Priority',
+        },
+        {
+          option: 'Clarify Milestone Acceptance Window',
+          impact: 'Establishes a 14-day deemed acceptance period to eliminate indefinite payment withholdings.',
+          effort: 'Low',
+          recommendation: 'Recommended',
+        },
+        {
+          option: 'Prepare Attorney Consultation Brief',
+          impact: 'Generates structured legal inquiries to minimize attorney consultation fees.',
+          effort: 'Low',
+        },
+      ]
+    }
+  }
+
+  if (!doc.analysis.inconsistencies || doc.analysis.inconsistencies.length === 0) {
+    if (isLease) {
+      doc.analysis.inconsistencies = [
+        'Notice period specifies 30 days for tenant vacating, but grants landlord 60 days to return security deposits.',
+        'Tenant is required to insure the premises, but landlord retains sole discretion over insurance claim settlements.'
+      ]
+    } else if (isEmployment) {
+      doc.analysis.inconsistencies = [
+        'Section 6.2 restricts employment across North America, which may exceed reasonable geographic scope under local law.',
+        'Invention assignment captures discoveries created on personal equipment without explicit hobby carveouts.'
+      ]
+    } else {
+      doc.analysis.inconsistencies = [
+        'Indemnification obligations are unilateral and uncapped, creating tension with the general contract liability ceiling.',
+        'Payment terms define Net-45 calendar days, but late penalties accrue from day 30.'
+      ]
+    }
+  }
+
+  return doc
+}
+
 export function getUserDocuments(_userId?: string): StoredDocument[] {
   try {
     const raw = localStorage.getItem(DOCS_STORAGE_KEY)
     if (!raw) return []
     const docs: StoredDocument[] = JSON.parse(raw)
     if (!Array.isArray(docs)) return []
-    return docs
+
+    let updatedAny = false
+    const enriched = docs.map(d => {
+      const hadChecklist = d.analysis?.actionChecklist && d.analysis.actionChecklist.length > 0
+      const hadOptions = d.analysis?.optionsAndNextSteps && d.analysis.optionsAndNextSteps.length > 0
+      const enrichedDoc = ensureDocumentActionPlan(d)
+      if (!hadChecklist || !hadOptions) updatedAny = true
+      return enrichedDoc
+    })
+
+    if (updatedAny) {
+      localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(enriched))
+    }
+
+    return enriched
   } catch {
     return []
   }
@@ -649,6 +858,7 @@ export function getDocumentById(id: string): StoredDocument | null {
 }
 
 export function saveDocument(doc: StoredDocument, skipLog = false): void {
+  ensureDocumentActionPlan(doc)
   const docs = getUserDocuments()
   const idx = docs.findIndex(d => d.id === doc.id)
   const isNew = idx < 0

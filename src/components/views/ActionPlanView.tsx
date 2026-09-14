@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CheckCircle2, Circle, AlertTriangle, ArrowRight, ShieldAlert, ListChecks, HelpCircle, Copy, Check } from 'lucide-react'
 import { StoredDocument } from '../../types/legal'
-import { toggleChecklistItem } from '../../lib/storage'
+import { toggleChecklistItem, ensureDocumentActionPlan } from '../../lib/storage'
 
 interface ActionPlanViewProps {
   doc: StoredDocument
@@ -18,7 +18,8 @@ export function ActionPlanView({
   const [filterPhase, setFilterPhase] = useState<'All' | 'Pre-Signing' | 'Execution' | 'Post-Signing'>('All')
   const [copiedNotice, setCopiedNotice] = useState(false)
 
-  const analysis = doc.analysis
+  const activeDoc = ensureDocumentActionPlan(doc)
+  const analysis = activeDoc.analysis
   const checklists = analysis?.actionChecklist || []
   const inconsistencies = analysis?.inconsistencies || []
   const options = analysis?.optionsAndNextSteps || []
