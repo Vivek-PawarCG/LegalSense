@@ -6,7 +6,7 @@ import {
   ShieldCheck, ArrowRightLeft, Send, ThumbsUp, ThumbsDown, LockKeyhole, Menu,
   Play, ExternalLink, LogOut, CheckCircle2, Shield, ArrowRight, Zap, RefreshCw,
   Sliders, Trash2, HelpCircle, FileCheck, Layers, Eye,
-  History, PanelLeftClose, PanelLeftOpen
+  History, PanelLeftClose, PanelLeftOpen, ListChecks
 } from 'lucide-react'
 import { getCurrentUser, logout, User } from './lib/auth'
 import {
@@ -23,9 +23,11 @@ import { RemotionHeroPlayer } from './components/RemotionHeroAnimation'
 import { RemotionDemoModal } from './components/RemotionDemoModal'
 import { RemotionAnalysisModal } from './components/RemotionAnalysisModal'
 import { MarkdownResponse } from './components/MarkdownResponse'
+import { ActionPlanView } from './components/views/ActionPlanView'
+import { AttorneyPacketView } from './components/views/AttorneyPacketView'
 import { startTour } from './lib/tour'
 
-type Screen = 'landing' | 'home' | 'documents' | 'analysis' | 'clause' | 'compare' | 'ask' | 'templates' | 'settings'
+type Screen = 'landing' | 'home' | 'documents' | 'analysis' | 'clause' | 'compare' | 'action-plan' | 'attorney-packet' | 'ask' | 'templates' | 'settings'
 type ToastTone = 'info' | 'success' | 'error'
 type Toast = { message: string; tone?: ToastTone } | null
 
@@ -497,6 +499,8 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
     ['analysis', 'Risk Analysis', ShieldCheck],
     ['clause', 'Clause Inspector', Eye],
     ['compare', 'Compare Contracts', ArrowRightLeft],
+    ['action-plan', 'Action Plan', ListChecks],
+    ['attorney-packet', 'Attorney Prep', Scale],
     ['ask', 'Ask AI Copilot', MessageCircle],
     ['templates', 'Standard Templates', LayoutTemplate],
     ['settings', 'Settings', Settings],
@@ -506,6 +510,13 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
 
   return (
     <div className="min-h-screen bg-white text-slate-900 antialiased font-sans">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-xl focus:shadow-xl focus:font-bold focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {!isApp ? (
         <LandingPage
           currentUser={currentUser}
@@ -520,7 +531,7 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
       ) : (
         <div className="flex min-h-screen bg-[#f8fafc]">
           {/* Sidebar */}
-          <aside className={`sidebar ${mobileNav ? 'open' : ''}`}>
+          <aside className={`sidebar ${mobileNav ? 'open' : ''}`} aria-label="Application Sidebar Navigation">
             <div className="brand px-5 pt-5 pb-4 cursor-pointer" onClick={() => setScreen('home')}>
               <img src="/logo.svg" alt="ClariLegal Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
               <div>
@@ -529,7 +540,7 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
               </div>
             </div>
 
-            <nav id="tour-sidebar-nav" className="px-3 space-y-1 mt-3 flex-1">
+            <nav id="tour-sidebar-nav" aria-label="Application Modules" className="px-3 space-y-1 mt-3 flex-1">
               {navItems.map(([key, label, Icon]) => (
                 <button
                   key={label}
@@ -565,7 +576,8 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
                 <button
                   onClick={handleSignOut}
                   title="Sign Out"
-                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                  aria-label="Sign out of account"
+                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                 >
                   <LogOut size={16} />
                 </button>
@@ -574,10 +586,16 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
           </aside>
 
           {/* Main Content Area */}
-          <main className={`flex-1 min-w-0 bg-[#fbfcff] ${screen === 'ask' || screen === 'analysis' ? 'h-screen overflow-hidden' : 'overflow-y-auto'}`}>
+          <main
+            id="main-content"
+            tabIndex={-1}
+            role="main"
+            aria-label="Main Application Content"
+            className={`flex-1 min-w-0 bg-[#fbfcff] ${screen === 'ask' || screen === 'analysis' ? 'h-screen overflow-hidden' : 'overflow-y-auto'}`}
+          >
             {/* Mobile Header */}
             <div className="mobile-top">
-              <button onClick={() => setMobileNav(v => !v)}><Menu size={22} /></button>
+              <button aria-label="Toggle navigation menu" onClick={() => setMobileNav(v => !v)}><Menu size={22} /></button>
               <div className="brand-name flex items-center gap-2">
                 <img src="/logo.svg" alt="ClariLegal Logo" className="w-7 h-7 rounded-full object-contain shrink-0" /> ClariLegal
               </div>
@@ -687,6 +705,41 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
               />
             )}
 
+            {screen === 'action-plan' && (
+              activeDoc ? (
+                <ActionPlanView
+                  doc={activeDoc}
+                  onDocUpdated={() => {
+                    setDocs(getUserDocuments())
+                  }}
+                  onNavigateToBriefing={() => setScreen('attorney-packet')}
+                />
+              ) : (
+                <div className="p-8 text-center text-slate-500">
+                  <p className="text-sm font-medium">Please select or upload a document to view its action plan.</p>
+                  <button onClick={() => setScreen('home')} className="mt-3 px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs">
+                    Go to Dashboard
+                  </button>
+                </div>
+              )
+            )}
+
+            {screen === 'attorney-packet' && (
+              activeDoc ? (
+                <AttorneyPacketView
+                  doc={activeDoc}
+                  onBack={() => setScreen('analysis')}
+                />
+              ) : (
+                <div className="p-8 text-center text-slate-500">
+                  <p className="text-sm font-medium">Please select or upload a document to view its attorney preparation packet.</p>
+                  <button onClick={() => setScreen('home')} className="mt-3 px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs">
+                    Go to Dashboard
+                  </button>
+                </div>
+              )
+            )}
+
             {screen === 'templates' && (
               <TemplatesScreen
                 onImportTemplate={(name) => handleLoadSample(name)}
@@ -709,6 +762,7 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
         className="hidden"
         ref={fileInputRef}
         type="file"
+        aria-label="Upload legal contract document"
         accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
         onChange={e => {
           const f = e.target.files?.[0]
@@ -735,12 +789,16 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
 
       {/* Global Toast */}
       {toast && (
-        <div className={`toast ${toast.tone || 'info'} animate-in slide-in-from-bottom-5 duration-200`}>
+        <div
+          role="status"
+          aria-live="polite"
+          className={`toast ${toast.tone || 'info'} animate-in slide-in-from-bottom-5 duration-200`}
+        >
           <div>
             {toast.tone === 'success' ? <Check size={17} /> : toast.tone === 'error' ? <AlertTriangle size={17} /> : <Info size={17} />}
           </div>
           <span className="font-semibold">{toast.message}</span>
-          <button onClick={() => setToast(null)}><X size={15} /></button>
+          <button aria-label="Dismiss notification" onClick={() => setToast(null)}><X size={15} /></button>
         </div>
       )}
     </div>

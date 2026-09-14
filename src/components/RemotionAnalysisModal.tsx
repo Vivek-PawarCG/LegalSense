@@ -447,10 +447,24 @@ export function RemotionAnalysisModal({
   loadingMsg?: string
   onClose?: () => void
 }) {
+  React.useEffect(() => {
+    if (!isOpen || !onClose) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose!()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="analysis-modal-title"
+    >
       <div className="relative w-full max-w-3xl rounded-2xl overflow-hidden bg-slate-900 border border-indigo-500/30 shadow-2xl shadow-indigo-950/70 flex flex-col">
         {/* Top Control Bar */}
         <div className="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
@@ -459,7 +473,7 @@ export function RemotionAnalysisModal({
               <Sparkles size={18} className="animate-spin" style={{ animationDuration: '4s' }} />
             </div>
             <div>
-              <div className="text-sm font-black text-white tracking-tight flex items-center gap-2">
+              <div id="analysis-modal-title" className="text-sm font-black text-white tracking-tight flex items-center gap-2">
                 Analyzing Document
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                   REMOTION ENGINE

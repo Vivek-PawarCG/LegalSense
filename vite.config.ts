@@ -308,5 +308,23 @@ function generateIntelligentChatResponse(message: string, context?: string) {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), clariLegalApiPlugin()]
+  plugins: [react(), tailwindcss(), clariLegalApiPlugin()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('remotion') || id.includes('@remotion')) {
+            return 'vendor-remotion'
+          }
+          if (id.includes('lucide-react')) {
+            return 'vendor-icons'
+          }
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+            return 'vendor-react'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1500,
+  },
 })

@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc -b"
   },
   "dependencies": {
     "@google/genai": "latest",
@@ -24,8 +27,12 @@
     "vite": "latest"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^26.5.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vercel/node": "latest"
+    "jsdom": "^30.0.1",
+    "vitest": "^5.0.0"
   }
 }

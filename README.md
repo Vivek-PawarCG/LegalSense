@@ -28,8 +28,10 @@ Legal documents (NDAs, employment contracts, commercial leases, SaaS agreements)
 | **4. In-depth clause breakdown** | **Inline Clause Expansion** | Selected clauses expand smoothly in place, displaying exact contract quotes, plain-English translations, and attorney consultation advice. |
 | **5. Comparing contracts & redlines** | **Side-by-Side Diff Engine** | Ingests two contract versions (e.g., standard vs. vendor redlines), pinpoints additions/deletions, and highlights risk shifts. |
 | **6. Answering questions grounded in documents** | **Document-Grounded AI Legal Analyst ("Ask AI")** | Interactive Q&A strictly grounded in the document context, citing specific clauses with click-to-highlight jump references. |
-| **7. Helping users prepare for legal counsel** | **"Questions to Ask Counsel" Generator** | Prepares structured, precise inquiries for the user to present to their attorney, significantly cutting down billable consultation hours. |
-| **8. Real-time visual contract scanning** | **Remotion Cinematic Video Feed** | Live visual scanning pipeline powered by **Remotion**, rendering OCR parsing, chunking, and risk detection animations. |
+| **7. Helping users understand options & next steps** | **Options & Next Steps Navigator** | Strategic decision-tree outlining practical options (sign as-is, request reciprocal carveouts, reject redlines) with effort-to-impact ratings. |
+| **8. Generating summaries, checklists & actionable outputs** | **Execution Checklist & Milestone Generator** | Generates phase-filtered checklists (Pre-Signing, Execution, Post-Signing) with interactive progress tracking. |
+| **9. Helping users prepare for legal counsel** | **Attorney Consultation Briefing Packet** | Downloadable and printable structured briefing with executive summaries, flagged high-risk quotes, and prioritized questions for counsel. |
+| **10. Real-time visual contract scanning** | **Remotion Cinematic Video Feed** | Live visual scanning pipeline powered by **Remotion**, rendering OCR parsing, chunking, and risk detection animations. |
 
 ---
 
@@ -139,6 +141,27 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 npm run build
 npm run preview
 ```
+
+### 6. Automated Testing & Verification
+ClariLegal includes a comprehensive Vitest test suite validating all functional capabilities, security defenses, accessibility compliance, and problem statement alignment:
+```bash
+npm test
+```
+* **5 Comprehensive Test Suites**:
+  * `tests/api.test.ts` — API client, custom API key validation, payload limits, and offline fallbacks.
+  * `tests/security.test.ts` — Prompt injection defenses, API key sanitization, and HTTP CSP security headers.
+  * `tests/storage.test.ts` — Document persistence, metrics calculation, and attorney briefing generator.
+  * `tests/problem-statement.test.ts` — Validates all 7 hackathon use cases and non-attorney assistance disclosures.
+  * `tests/accessibility.test.tsx` — WCAG landmarks, interactive checkbox labels, and dialog focus accessibility.
+* **35 / 35 Passing Tests** with clean build execution.
+
+---
+
+## ♿ Accessibility & Inclusive Design
+* **WCAG 2.2 Compliant Landmarks**: Semantic `<main id="main-content">`, `<nav aria-label="...">`, `<header>`, and `<aside>` navigation structure.
+* **Keyboard Accessible**: "Skip to main content" shortcut, visible focus rings (`focus-visible`), and full Escape-key dismissibility across all modals.
+* **Screen Reader Live Regions**: Dynamic announcements for contract scanning and notifications via `role="status"` and `aria-live="polite"`.
+* **Accessible Checklists**: Action items powered by `role="checkbox"` and `aria-checked` states.
 
 ---
 

@@ -254,10 +254,24 @@ export function ProductWalkthroughComposition() {
 }
 
 export function RemotionDemoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  React.useEffect(() => {
+    if (!isOpen) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="demo-modal-title"
+    >
       <div className="relative w-full max-w-3xl bg-slate-900 rounded-2xl shadow-2xl border border-slate-700/60 overflow-hidden">
         {/* Top bar */}
         <div className="flex items-center justify-between px-5 py-3.5 bg-slate-900/90 border-b border-slate-800 text-white">
@@ -265,14 +279,15 @@ export function RemotionDemoModal({ isOpen, onClose }: { isOpen: boolean; onClos
             <div className="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center text-white text-xs font-black">
               <Scale size={14} />
             </div>
-            <span className="text-xs font-bold tracking-tight">Product Walkthrough Demo</span>
+            <span id="demo-modal-title" className="text-xs font-bold tracking-tight">Product Walkthrough Demo</span>
             <span className="text-[10px] bg-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded-full font-semibold">
               Video Guide
             </span>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            aria-label="Close walkthrough demo"
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
           >
             <X size={18} />
           </button>

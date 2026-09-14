@@ -1,77 +1,31 @@
-export type RiskLevel = 'Low' | 'Medium' | 'High'
+import {
+  RiskLevel,
+  ClauseItem,
+  AnalysisData,
+  ChatMessage,
+  ChatSession,
+  StoredDocument,
+  ActivityItem,
+  ChecklistItem,
+  ContractOption,
+} from '../types/legal'
 
-export interface ClauseItem {
-  id: string
-  section: string
-  title: string
-  quote: string
-  plainEnglish: string
-  whyItMatters: string
-  whoIsAffected: {
-    partyA: string
-    partyB: string
-  }
-  questionsToAsk: string[]
-  risk: RiskLevel
-  page: number
-}
-
-export interface AnalysisData {
-  overallRisk: RiskLevel
-  summary: string
-  parties: string[]
-  type: string
-  effective: string
-  duration: string
-  takeaways: string[]
-  risks: [string, RiskLevel][]
-  clauses: ClauseItem[]
-}
-
-export interface ChatMessage {
-  id: string
-  role: 'user' | 'assistant'
-  text: string
-  timestamp: string
-  sourceReference?: string
-}
-
-export interface ChatSession {
-  id: string
-  title: string
-  timestamp: string
-  messages: ChatMessage[]
-}
-
-export interface StoredDocument {
-  id: string
-  name: string
-  uploadDate: string
-  size: string
-  fileType: string
-  pageCount: number
-  overallRisk: RiskLevel
-  analysis: AnalysisData
-  messages: ChatMessage[]
-  chatSessions?: ChatSession[]
-  activeSessionId?: string
-  rawText?: string
-  fileDataUrl?: string
-}
-
-export interface ActivityItem {
-  id: string
-  type: 'analyze' | 'compare' | 'chat' | 'delete' | 'export' | 'sample'
-  title: string
-  time: string
-  timestamp: number
+export type {
+  RiskLevel,
+  ClauseItem,
+  AnalysisData,
+  ChatMessage,
+  ChatSession,
+  StoredDocument,
+  ActivityItem,
+  ChecklistItem,
+  ContractOption,
 }
 
 const DOCS_STORAGE_KEY = 'legalsense_documents_v1'
 const ACTIVITY_STORAGE_KEY = 'legalsense_activity_v1'
 
-
-// Auto-purge any stale mock data from previous sessions so workspace starts fresh
+// Auto-purge stale mock data from previous prototypes so workspace starts fresh
 if (typeof window !== 'undefined' && window.localStorage) {
   try {
     const existing = localStorage.getItem(DOCS_STORAGE_KEY)
@@ -130,6 +84,45 @@ export function createTemplateDocument(key: string): StoredDocument {
           ['Confidentiality Duration', 'Low'],
           ['Equitable Remedies', 'Low'],
           ['Written Marking Requirement', 'Low']
+        ],
+        inconsistencies: [
+          'Section 2.1 requires written marking for tangible items within 30 days, but oral disclosures do not specify a written confirmation deadline.'
+        ],
+        optionsAndNextSteps: [
+          {
+            option: 'Execute as written',
+            impact: 'Standard mutual terms; minimal legal exposure for bilateral discussions.',
+            effort: 'Low',
+            recommendation: 'Recommended'
+          },
+          {
+            option: 'Add specific IP ownership disclaimer',
+            impact: 'Explicitly clarifies that sharing prototypes does not transfer patent or copyright licenses.',
+            effort: 'Low'
+          }
+        ],
+        actionChecklist: [
+          {
+            id: 'chk_1',
+            task: 'Mark all sensitive slide decks and source code repositories as "Confidential" prior to disclosure.',
+            phase: 'Pre-Signing',
+            priority: 'High',
+            completed: false
+          },
+          {
+            id: 'chk_2',
+            task: 'Verify signatory authorization for both corporate entities.',
+            phase: 'Execution',
+            priority: 'Medium',
+            completed: false
+          },
+          {
+            id: 'chk_3',
+            task: 'Calendar 2-year expiration milestone for return or certified destruction of confidential assets.',
+            phase: 'Post-Signing',
+            priority: 'Low',
+            completed: false
+          }
         ],
         clauses: [
           {
@@ -208,6 +201,52 @@ export function createTemplateDocument(key: string): StoredDocument {
           ['Cause Termination Definition', 'Medium'],
           ['Severance General Release', 'Low']
         ],
+        inconsistencies: [
+          'Section 6.2 imposes a nationwide 12-month non-compete, while Section 10.4 specifies California governing law where non-compete covenants are statutory void.',
+          'Notice period for termination without Cause requires 30 days, but severance calculation starts immediately upon notice.'
+        ],
+        optionsAndNextSteps: [
+          {
+            option: 'Negotiate Non-Compete Carveout',
+            impact: 'Removes unenforceable or excessive geographic restrictions and avoids livelihood barriers.',
+            effort: 'Medium',
+            recommendation: 'High Priority'
+          },
+          {
+            option: 'Attach Exhibit A for Prior Inventions',
+            impact: 'Protects pre-existing personal code, patents, and independent weekend projects.',
+            effort: 'Low',
+            recommendation: 'Essential'
+          },
+          {
+            option: 'Request Attorney Consultation',
+            impact: 'Engage employment counsel to review equity acceleration triggers and tax implications (83(b) election).',
+            effort: 'High'
+          }
+        ],
+        actionChecklist: [
+          {
+            id: 'chk_emp_1',
+            task: 'Prepare written schedule of pre-existing intellectual property (Exhibit A) to exclude from employer assignment.',
+            phase: 'Pre-Signing',
+            priority: 'High',
+            completed: false
+          },
+          {
+            id: 'chk_emp_2',
+            task: 'Consult attorney on Section 6.2 enforceability under applicable state law.',
+            phase: 'Pre-Signing',
+            priority: 'High',
+            completed: false
+          },
+          {
+            id: 'chk_emp_3',
+            task: 'File Section 83(b) tax election with IRS within 30 days of equity grant if receiving restricted stock.',
+            phase: 'Post-Signing',
+            priority: 'High',
+            completed: false
+          }
+        ],
         clauses: [
           {
             id: 'c_emp_1',
@@ -285,6 +324,45 @@ export function createTemplateDocument(key: string): StoredDocument {
           ['Payment Approval Milestones', 'Medium'],
           ['Background IP Retention', 'Low']
         ],
+        inconsistencies: [
+          'Deliverable acceptance clause grants client 14 business days to test, but does not state that silence constitutes deemed acceptance.'
+        ],
+        optionsAndNextSteps: [
+          {
+            option: 'Insert Deemed Acceptance Language',
+            impact: 'Prevents client from withholding invoice payments through passive delays.',
+            effort: 'Low',
+            recommendation: 'Recommended'
+          },
+          {
+            option: 'Add Kill Fee for Convenience Cancellation',
+            impact: 'Guarantees compensation for dedicated bench time if client abruptly cancels project.',
+            effort: 'Medium'
+          }
+        ],
+        actionChecklist: [
+          {
+            id: 'chk_con_1',
+            task: 'Define clear milestone acceptance criteria in Statement of Work (SOW Exhibit 1).',
+            phase: 'Pre-Signing',
+            priority: 'High',
+            completed: false
+          },
+          {
+            id: 'chk_con_2',
+            task: 'Submit Certificate of Insurance (COI) for Commercial General Liability.',
+            phase: 'Execution',
+            priority: 'Medium',
+            completed: false
+          },
+          {
+            id: 'chk_con_3',
+            task: 'Implement monthly milestone invoicing cadence with Net-30 follow-up alerts.',
+            phase: 'Post-Signing',
+            priority: 'Medium',
+            completed: false
+          }
+        ],
         clauses: [
           {
             id: 'c_con_1',
@@ -343,6 +421,52 @@ export function createTemplateDocument(key: string): StoredDocument {
         ['Indemnification Scope', 'High'],
         ['Limitation of Liability Cap', 'Medium'],
         ['Payment Retainage & Milestones', 'Low']
+      ],
+      inconsistencies: [
+        'Section 12.1 imposes uncapped third-party indemnification, which directly conflicts with the mutual liability ceiling in Section 14.3.',
+        'Payment terms state Net-45 days, but late fee penalties begin accumulating on calendar day 31.'
+      ],
+      optionsAndNextSteps: [
+        {
+          option: 'Harmonize Indemnity with Liability Cap',
+          impact: 'Eliminates unlimited financial exposure by subjecting indemnities to a defined 2x super-cap.',
+          effort: 'Medium',
+          recommendation: 'Critical'
+        },
+        {
+          option: 'Negotiate Retainage Release Schedule',
+          impact: 'Ensures the 5% retainage is disbursed within 30 days of milestone sign-off.',
+          effort: 'Low',
+          recommendation: 'Recommended'
+        },
+        {
+          option: 'Escalate to Legal Counsel',
+          impact: 'Have attorney review IP infringement indemnification carve-outs.',
+          effort: 'High'
+        }
+      ],
+      actionChecklist: [
+        {
+          id: 'chk_msa_1',
+          task: 'Demand mutual indemnity cap equal to trailing 12 months fees paid under applicable SOW.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false
+        },
+        {
+          id: 'chk_msa_2',
+          task: 'Verify mutual non-solicitation language is reciprocal between both parties.',
+          phase: 'Pre-Signing',
+          priority: 'Medium',
+          completed: false
+        },
+        {
+          id: 'chk_msa_3',
+          task: 'Set up recurring billing reminders and milestone acceptance tracking.',
+          phase: 'Post-Signing',
+          priority: 'Medium',
+          completed: false
+        }
       ],
       clauses: [
         {
@@ -406,6 +530,24 @@ export function createSampleComparePair(): [StoredDocument, StoredDocument] {
       duration: '12 Months',
       takeaways: ['Liability capped at 1x contract value', 'Mutual confidentiality and IP protection'],
       risks: [['Liability Cap', 'Low']],
+      inconsistencies: [],
+      optionsAndNextSteps: [
+        {
+          option: 'Adopt Baseline Draft',
+          impact: 'Symmetrical protections and predictable liability ceiling.',
+          effort: 'Low',
+          recommendation: 'Preferred'
+        }
+      ],
+      actionChecklist: [
+        {
+          id: 'chk_cmp_a',
+          task: 'Ensure baseline draft is shared as reference baseline for counterparty review.',
+          phase: 'Pre-Signing',
+          priority: 'Medium',
+          completed: false
+        }
+      ],
       clauses: [
         {
           id: 'c1',
@@ -444,6 +586,31 @@ export function createSampleComparePair(): [StoredDocument, StoredDocument] {
         ['Uncapped Indemnity', 'High'],
         ['Non-Solicitation', 'Medium']
       ],
+      inconsistencies: [
+        'Version B removes the liability ceiling for Vendor but retains liability limitation for Client.'
+      ],
+      optionsAndNextSteps: [
+        {
+          option: 'Reject Uncapped Indemnity Redline',
+          impact: 'Insists on restoring the 1x annual fees liability cap from Version 1.',
+          effort: 'Medium',
+          recommendation: 'Critical'
+        },
+        {
+          option: 'Propose Compromise Super-Cap',
+          impact: 'Offers a 2x contract value cap for third-party IP indemnity.',
+          effort: 'Low'
+        }
+      ],
+      actionChecklist: [
+        {
+          id: 'chk_cmp_b1',
+          task: 'Mark redline rejection on Section 12.1 in revision document.',
+          phase: 'Pre-Signing',
+          priority: 'High',
+          completed: false
+        }
+      ],
       clauses: [
         {
           id: 'c1',
@@ -453,7 +620,7 @@ export function createSampleComparePair(): [StoredDocument, StoredDocument] {
           plainEnglish: 'Unlimited liability exposure for vendor.',
           whyItMatters: 'Exposes organization to catastrophic financial loss.',
           whoIsAffected: { partyA: 'Uncapped risk', partyB: 'Full indemnity' },
-          questionsToAsk: [],
+          questionsToAsk: ['Can we restore the 1x trailing fee cap?'],
           risk: 'High',
           page: 6
         }
@@ -464,16 +631,12 @@ export function createSampleComparePair(): [StoredDocument, StoredDocument] {
   return [docA, docB]
 }
 
-export function getUserDocuments(userId?: string): StoredDocument[] {
+export function getUserDocuments(_userId?: string): StoredDocument[] {
   try {
     const raw = localStorage.getItem(DOCS_STORAGE_KEY)
-    if (!raw) {
-      return []
-    }
+    if (!raw) return []
     const docs: StoredDocument[] = JSON.parse(raw)
-    if (!Array.isArray(docs)) {
-      return []
-    }
+    if (!Array.isArray(docs)) return []
     return docs
   } catch {
     return []
@@ -511,6 +674,94 @@ export function deleteDocument(id: string): StoredDocument[] {
   return remaining
 }
 
+export function toggleChecklistItem(docId: string, checklistId: string): StoredDocument | null {
+  const docs = getUserDocuments()
+  const doc = docs.find(d => d.id === docId)
+  if (!doc || !doc.analysis?.actionChecklist) return null
+
+  doc.analysis.actionChecklist = doc.analysis.actionChecklist.map(item => {
+    if (item.id === checklistId) {
+      return { ...item, completed: !item.completed }
+    }
+    return item
+  })
+
+  saveDocument(doc, true)
+  return doc
+}
+
+export function generateAttorneyBriefing(doc: StoredDocument): string {
+  const highRiskClauses = (doc.analysis?.clauses || []).filter(c => c.risk === 'High')
+  const questions = (doc.analysis?.clauses || []).flatMap(c => c.questionsToAsk || [])
+
+  return `# ClariLegal Attorney Consultation Briefing Packet
+**Document:** ${doc.name}
+**Assessed Document Type:** ${doc.analysis?.type || 'Contract'}
+**Overall Risk Assessment:** ${doc.overallRisk} Risk
+**Analysis Date:** ${doc.uploadDate || new Date().toLocaleDateString('en-GB')}
+**Prepared By:** ClariLegal AI Intelligence Workspace
+
+---
+
+### ⚠️ Ethical & Legal Notice
+*This briefing packet is generated by an artificial intelligence productivity engine for informational, preparatory, and organizational purposes. It is designed to assist you in preparing for a consultation with a licensed attorney and does not constitute formal legal representation or attorney-client privileged advice.*
+
+---
+
+## 1. Executive Summary
+${doc.analysis?.summary || 'No summary available.'}
+
+* **Identified Parties:** ${(doc.analysis?.parties || []).join(' & ')}
+* **Term / Effective Period:** ${doc.analysis?.effective || 'Upon execution'} (${doc.analysis?.duration || 'Standard term'})
+
+---
+
+## 2. Critical & High-Risk Provisions Requiring Counsel Review
+${
+  highRiskClauses.length > 0
+    ? highRiskClauses
+        .map(
+          c => `### Section ${c.section}: ${c.title} [${c.risk} Risk]
+* **Contract Excerpt:** "${c.quote}"
+* **Plain-English Impact:** ${c.plainEnglish}
+* **Why Counsel Should Review:** ${c.whyItMatters}
+* **Parties Affected:** Party A: ${c.whoIsAffected?.partyA} | Party B: ${c.whoIsAffected?.partyB}`
+        )
+        .join('\n\n')
+    : 'No critical high-risk clauses were flagged in the automated scan.'
+}
+
+---
+
+## 3. Potential Inconsistencies & Asymmetric Obligations
+${
+  (doc.analysis?.inconsistencies && doc.analysis.inconsistencies.length > 0)
+    ? doc.analysis.inconsistencies.map(inc => `* ⚠️ ${inc}`).join('\n')
+    : '* No obvious structural inconsistencies detected in preliminary audit.'
+}
+
+---
+
+## 4. Prioritized Questions to Ask Your Attorney
+${
+  questions.length > 0
+    ? questions.map((q, i) => `${i + 1}. **${q}**`).join('\n')
+    : '1. What are the standard market carve-outs for this contract category?\n2. Are the indemnification and liability provisions mutual and capped?'
+}
+
+---
+
+## 5. Recommended Next Steps & Options
+${
+  (doc.analysis?.optionsAndNextSteps && doc.analysis.optionsAndNextSteps.length > 0)
+    ? doc.analysis.optionsAndNextSteps
+        .map(opt => `* **${opt.option}** (${opt.effort} Effort${opt.recommendation ? ` — ${opt.recommendation}` : ''}): ${opt.impact}`)
+        .join('\n')
+    : '* Request redlines on high-risk provisions.\n* Escalate to legal counsel for definitive signature approval.'
+}
+`
+}
+
 export function appendDocMessage(docId: string, msg: ChatMessage): StoredDocument | null {
   const docs = getUserDocuments()
   const doc = docs.find(d => d.id === docId)
@@ -526,7 +777,6 @@ export function appendDocMessage(docId: string, msg: ChatMessage): StoredDocumen
     doc.chatSessions = []
   }
 
-  // Keep the active session in chatSessions strictly updated in real time
   const userMessages = doc.messages.filter(m => m.role === 'user')
   const sessionTitle = userMessages[0]?.text.slice(0, 48) || 'Contract Q&A'
   const sessionIdx = doc.chatSessions.findIndex(s => s.id === doc.activeSessionId)
@@ -555,7 +805,6 @@ export function startNewDocChat(docId: string): StoredDocument | null {
 
   if (!doc.chatSessions) doc.chatSessions = []
 
-  // Ensure current conversation is saved before starting new chat
   const currentMessages = doc.messages || []
   const userMessages = currentMessages.filter(m => m.role === 'user')
 
@@ -577,12 +826,10 @@ export function startNewDocChat(docId: string): StoredDocument | null {
     }
   }
 
-  // Create brand new session and reset chat stream
   const newSessionId = `session_${Date.now()}`
   doc.activeSessionId = newSessionId
   doc.messages = []
 
-  // Pre-insert new chat session entry at top
   const newSession: ChatSession = {
     id: newSessionId,
     title: 'New Chat',
@@ -600,7 +847,6 @@ export function loadDocChatSession(docId: string, sessionId: string): StoredDocu
   const doc = docs.find(d => d.id === docId)
   if (!doc || !doc.chatSessions) return null
 
-  // Ensure current active session is synchronized
   const currentMessages = doc.messages || []
   const userMessages = currentMessages.filter(m => m.role === 'user')
   if (userMessages.length > 0 && doc.activeSessionId && doc.activeSessionId !== sessionId) {
@@ -654,14 +900,12 @@ export function ensureDocChatSessions(doc: StoredDocument): ChatSession[] {
     doc.chatSessions = []
   }
 
-  // Purge any mock/preset chats completely so history is 100% natural
   const filtered = doc.chatSessions.filter(s => !s.id.startsWith('preset_'))
   if (filtered.length !== doc.chatSessions.length) {
     doc.chatSessions = filtered
     saveDocument(doc, true)
   }
 
-  // If there are current user messages in doc.messages, sync to active session
   if (doc.messages && doc.messages.length > 0) {
     const userMessages = doc.messages.filter(m => m.role === 'user')
     if (userMessages.length > 0) {
@@ -709,7 +953,6 @@ export function getUserActivity(): ActivityItem[] {
       if (Array.isArray(parsed)) items = parsed
     }
 
-    // If activity list is empty but documents exist in workspace, populate audit trail from documents
     if (items.length === 0) {
       const docs = getUserDocuments()
       if (docs.length > 0) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Lock, Mail, User as UserIcon, X, Shield, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react'
 import { login, register, User } from '../lib/auth'
 
@@ -16,6 +16,15 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }:
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!isOpen) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
 
   if (!isOpen) return null
 
@@ -54,7 +63,12 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }:
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+    >
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
         {/* Header */}
         <div className="p-6 pb-4 bg-gradient-to-br from-indigo-50/70 to-slate-50 border-b border-slate-100">
@@ -62,13 +76,14 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }:
             <div className="flex items-center gap-2.5">
               <img src="/logo.svg" alt="ClariLegal Logo" className="w-8 h-8 rounded-full object-contain shrink-0" />
               <div>
-                <h3 className="text-base font-bold text-slate-900">ClariLegal Account</h3>
+                <h3 id="auth-modal-title" className="text-base font-bold text-slate-900">ClariLegal Account</h3>
                 <p className="text-xs text-slate-500">Secure contract intelligence workspace</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors"
+              aria-label="Close authentication dialog"
+              className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
             >
               <X size={18} />
             </button>
