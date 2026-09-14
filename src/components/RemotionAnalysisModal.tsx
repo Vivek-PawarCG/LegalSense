@@ -4,7 +4,7 @@ import { useCurrentFrame, useVideoConfig, interpolate, spring } from 'remotion'
 import { Sparkles, Shield, AlertTriangle, FileCheck, CheckCircle2, X } from 'lucide-react'
 
 // 1. Remotion Composition: Animated Laser Scanner & Legal AI Telemetry
-export function DocumentScanningComposition() {
+export function DocumentScanningComposition({ progress }: { progress?: number }) {
   const frame = useCurrentFrame()
   const { fps, durationInFrames } = useVideoConfig()
 
@@ -22,8 +22,12 @@ export function DocumentScanningComposition() {
   // Pulse effect for highlighted clauses
   const pulse = Math.sin(frame / 6) * 0.15 + 0.85
 
-  // Active scanning stage based on frame progression
-  const stage = Math.min(3, Math.floor(frame / 45))
+  // Active scanning stage based on continuous asymptotic progress rather than a repeating frame loop
+  const currentPct = progress !== undefined
+    ? Math.min(96, Math.max(15, Math.round(progress)))
+    : Math.min(94, Math.floor(40 + (frame / durationInFrames) * 48))
+
+  const stage = currentPct < 35 ? 0 : currentPct < 65 ? 1 : currentPct < 85 ? 2 : 3
 
   return (
     <div
@@ -414,7 +418,7 @@ export function DocumentScanningComposition() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
             <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 700 }}>EXPOSURE METER</span>
             <span style={{ fontSize: 10, fontWeight: 900, color: '#f59e0b' }}>
-              {Math.min(94, Math.floor(40 + (frame / durationInFrames) * 48))}% COMPLETED
+              {currentPct}% COMPLETED
             </span>
           </div>
 
@@ -422,10 +426,10 @@ export function DocumentScanningComposition() {
             <div
               style={{
                 height: '100%',
-                width: `${Math.min(96, Math.floor((frame / durationInFrames) * 100))}%`,
+                width: `${currentPct}%`,
                 background: 'linear-gradient(90deg, #38bdf8 0%, #6366f1 50%, #ec4899 100%)',
                 boxShadow: '0 0 10px rgba(99, 102, 241, 0.8)',
-                transition: 'width 0.1s linear',
+                transition: 'width 0.2s ease-out',
               }}
             />
           </div>
@@ -447,6 +451,27 @@ export function RemotionAnalysisModal({
   loadingMsg?: string
   onClose?: () => void
 }) {
+  const [progress, setProgress] = React.useState(16)
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      setProgress(16)
+      return
+    }
+
+    const startTime = Date.now()
+    const interval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000
+      // Continuous asymptotic progression:
+      // Starts immediately at 18%, climbs dynamically through the 60s/70s,
+      // and asymptotes smoothly towards 95% without ever resetting or looping to 0%
+      const calculated = Math.min(95, Math.round(18 + 77 * (1 - Math.exp(-elapsed / 4.8))))
+      setProgress(prev => Math.max(prev, calculated))
+    }, 120)
+
+    return () => clearInterval(interval)
+  }, [isOpen])
+
   React.useEffect(() => {
     if (!isOpen || !onClose) return
     function handleKeyDown(e: KeyboardEvent) {
@@ -499,6 +524,7 @@ export function RemotionAnalysisModal({
         <div className="w-full h-80 sm:h-96 bg-black relative">
           <Player
             component={DocumentScanningComposition}
+            inputProps={{ progress }}
             durationInFrames={180}
             compositionWidth={720}
             compositionHeight={400}
