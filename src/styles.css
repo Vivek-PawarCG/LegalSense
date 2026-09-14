@@ -685,9 +685,17 @@
     overflow: hidden !important;
   }
 
-  /* 2. Reset viewport locks so content paginates across real sheets instead of snapshotting viewport */
+  /* 2. Reset viewport locks and zero out top margins so page 1 begins immediately */
   html,
-  body,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
   #root,
   .flex,
   .min-h-screen,
@@ -709,8 +717,19 @@
     border: none !important;
   }
 
-  /* 3. Executive Dossier Print Layout */
-  .print-dossier {
+  /* Remove any outer margins/paddings that push content down to page 2 */
+  [role="region"][aria-label="Attorney Consultation Briefing Packet"],
+  .space-y-6,
+  .space-y-6 > * {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 3. Executive Dossier Print Layout: MUST allow multi-page breaking */
+  article,
+  article.print-dossier,
+  section {
+    display: block !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
@@ -718,21 +737,22 @@
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
-  /* 4. Avoid breaking individual cards or clauses across page boundaries */
-  section,
-  article,
-  blockquote,
-  .print-avoid-break {
+  /* 4. ONLY small individual cards avoid breaking */
+  .print-avoid-break,
+  blockquote {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
+    margin-bottom: 12px !important;
   }
 
   /* 5. Clean print margins */
   @page {
-    size: auto;
-    margin: 14mm 14mm 16mm 14mm;
+    size: portrait;
+    margin: 10mm 12mm 12mm 12mm;
   }
 
   /* 6. High-fidelity color reproduction */
