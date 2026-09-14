@@ -37,12 +37,43 @@ export function setCustomApiKey(key: string): boolean {
   }
 }
 
+// In-memory bounded cache for API calls (saves network, execution time, and server resources)
+const responseCache = new Map<string, { result: any; timestamp: number }>()
+const MAX_CACHE_ENTRIES = 50
+const CACHE_TTL_MS = 15 * 60 * 1000 // 15 minutes TTL
+
+function getCached<T>(key: string): T | null {
+  const item = responseCache.get(key)
+  if (!item) return null
+  if (Date.now() - item.timestamp > CACHE_TTL_MS) {
+    responseCache.delete(key)
+    return null
+  }
+  return item.result as T
+}
+
+function setCache(key: string, result: any): void {
+  if (responseCache.size >= MAX_CACHE_ENTRIES) {
+    const oldestKey = responseCache.keys().next().value
+    if (oldestKey) responseCache.delete(oldestKey)
+  }
+  responseCache.set(key, { result, timestamp: Date.now() })
+}
+
 export async function analyzeDocument(
   file: File,
   mode: 'analyze' | 'clause' | 'action-plan' | 'briefing' = 'analyze',
   prompt = ''
 ): Promise<AnalyzeResult> {
   const customApiKey = getCustomApiKey() || undefined
+
+  // Compute memory cache key based on file metadata and mode
+  const cacheKey = `analyze_${file.name}_${file.size}_${mode}_${prompt.slice(0, 100)}`
+  const cached = getCached<AnalyzeResult>(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   let data = ''
   try {
     data = await fileToBase64(file)
@@ -71,6 +102,7 @@ export async function analyzeDocument(
 
     const body = await res.json()
     if (!res.ok) throw new Error(body.error || 'Analysis failed')
+    setCache(cacheKey, body)
     return body
   } catch (err: any) {
     clearTimeout(timeoutId)
@@ -115,6 +147,12 @@ export async function compareDocuments(a: File, b: File): Promise<AnalyzeResult>
 
 export async function askGemini(message: string, context = '', previousInteractionId?: string) {
   const customApiKey = getCustomApiKey() || undefined
+  const cacheKey = `chat_${message.trim().toLowerCase()}_${context.slice(0, 150)}`
+  const cached = getCached<{ ok: boolean; text: string; interactionId: string }>(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -123,13 +161,16 @@ export async function askGemini(message: string, context = '', previousInteracti
     })
     const body = await res.json()
     if (!res.ok) throw new Error(body.error || 'Assistant failed')
+    setCache(cacheKey, body)
     return body as { ok: boolean; text: string; interactionId: string }
   } catch (err: any) {
-    return {
+    const fallbackResult = {
       ok: true,
       text: `Based on your contract context:\n\nRegarding "${message}":\n• Review reciprocal liability caps and indemnity carve-outs to avoid asymmetric obligations.\n• Verify standard notice periods for termination (typically 30-45 calendar days).\n• Ensure jurisdiction and dispute resolution venues are mutually agreed upon.\n\n*Disclaimer: This response is generated for legal navigation assistance and does not constitute formal attorney advice.*`,
       interactionId: `local_${Date.now()}`,
     }
+    setCache(cacheKey, fallbackResult)
+    return fallbackResult
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from 'react'
+import { useState, useRef, useMemo, useEffect, lazy, Suspense } from 'react'
 import {
   Bell, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, Download, FileText,
   Home, Info, LayoutTemplate, MessageCircle, MoreVertical, Plus, Search, Scale,
@@ -19,13 +19,15 @@ import {
 } from './lib/storage'
 import { analyzeDocument, askGemini, compareDocuments, setCustomApiKey, getCustomApiKey } from './lib/api'
 import { AuthModal } from './components/AuthModal'
-import { RemotionHeroPlayer } from './components/RemotionHeroAnimation'
-import { RemotionDemoModal } from './components/RemotionDemoModal'
-import { RemotionAnalysisModal } from './components/RemotionAnalysisModal'
 import { MarkdownResponse } from './components/MarkdownResponse'
-import { ActionPlanView } from './components/views/ActionPlanView'
-import { AttorneyPacketView } from './components/views/AttorneyPacketView'
 import { startTour } from './lib/tour'
+
+// Lazy-loaded heavy components for optimal initial bundle, memory footprint, and rendering performance
+const RemotionHeroPlayer = lazy(() => import('./components/RemotionHeroAnimation').then(m => ({ default: m.RemotionHeroPlayer })))
+const RemotionDemoModal = lazy(() => import('./components/RemotionDemoModal').then(m => ({ default: m.RemotionDemoModal })))
+const RemotionAnalysisModal = lazy(() => import('./components/RemotionAnalysisModal').then(m => ({ default: m.RemotionAnalysisModal })))
+const ActionPlanView = lazy(() => import('./components/views/ActionPlanView').then(m => ({ default: m.ActionPlanView })))
+const AttorneyPacketView = lazy(() => import('./components/views/AttorneyPacketView').then(m => ({ default: m.AttorneyPacketView })))
 
 type Screen = 'landing' | 'home' | 'documents' | 'analysis' | 'clause' | 'compare' | 'action-plan' | 'attorney-packet' | 'ask' | 'templates' | 'settings'
 type ToastTone = 'info' | 'success' | 'error'
@@ -707,13 +709,20 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
 
             {screen === 'action-plan' && (
               activeDoc ? (
-                <ActionPlanView
-                  doc={activeDoc}
-                  onDocUpdated={() => {
-                    setDocs(getUserDocuments())
-                  }}
-                  onNavigateToBriefing={() => setScreen('attorney-packet')}
-                />
+                <Suspense fallback={
+                  <div className="p-8 text-center text-slate-500 font-medium animate-pulse flex items-center justify-center gap-2">
+                    <RefreshCw size={16} className="animate-spin text-indigo-500" />
+                    <span>Loading Action Plan view...</span>
+                  </div>
+                }>
+                  <ActionPlanView
+                    doc={activeDoc}
+                    onDocUpdated={() => {
+                      setDocs(getUserDocuments())
+                    }}
+                    onNavigateToBriefing={() => setScreen('attorney-packet')}
+                  />
+                </Suspense>
               ) : (
                 <div className="p-8 text-center text-slate-500">
                   <p className="text-sm font-medium">Please select or upload a document to view its action plan.</p>
@@ -726,10 +735,17 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
 
             {screen === 'attorney-packet' && (
               activeDoc ? (
-                <AttorneyPacketView
-                  doc={activeDoc}
-                  onBack={() => setScreen('analysis')}
-                />
+                <Suspense fallback={
+                  <div className="p-8 text-center text-slate-500 font-medium animate-pulse flex items-center justify-center gap-2">
+                    <RefreshCw size={16} className="animate-spin text-indigo-500" />
+                    <span>Loading Attorney Packet view...</span>
+                  </div>
+                }>
+                  <AttorneyPacketView
+                    doc={activeDoc}
+                    onBack={() => setScreen('analysis')}
+                  />
+                </Suspense>
               ) : (
                 <div className="p-8 text-center text-slate-500">
                   <p className="text-sm font-medium">Please select or upload a document to view its attorney preparation packet.</p>
@@ -772,12 +788,16 @@ ${activeDoc.analysis.clauses.map(c => `[Section ${c.section}: ${c.title}] ${c.qu
       />
 
       {/* Remotion Document Analysis Progress Modal */}
-      <RemotionAnalysisModal
-        isOpen={analysisModalOpen}
-        fileName={analyzingFileName}
-        loadingMsg={analyzingStatus || loadingMsg}
-        onClose={() => setAnalysisModalOpen(false)}
-      />
+      {analysisModalOpen && (
+        <Suspense fallback={null}>
+          <RemotionAnalysisModal
+            isOpen={analysisModalOpen}
+            fileName={analyzingFileName}
+            loadingMsg={analyzingStatus || loadingMsg}
+            onClose={() => setAnalysisModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       {/* Auth Modal */}
       <AuthModal
@@ -924,16 +944,27 @@ function LandingPage({
 
           {/* Attention-Grabbing Hero Animation powered by Remotion */}
           <div className="w-full flex items-center justify-center">
-            <RemotionHeroPlayer />
+            <Suspense fallback={
+              <div className="w-full max-w-xl h-64 rounded-2xl bg-slate-900/60 border border-indigo-500/20 flex flex-col items-center justify-center gap-3 text-indigo-300 text-xs">
+                <RefreshCw size={20} className="animate-spin text-indigo-400" />
+                <span>Loading interactive AI showcase preview...</span>
+              </div>
+            }>
+              <RemotionHeroPlayer />
+            </Suspense>
           </div>
         </div>
       </section>
 
       {/* Remotion Walkthrough Demo Modal */}
-      <RemotionDemoModal
-        isOpen={demoModalOpen}
-        onClose={() => setDemoModalOpen(false)}
-      />
+      {demoModalOpen && (
+        <Suspense fallback={null}>
+          <RemotionDemoModal
+            isOpen={demoModalOpen}
+            onClose={() => setDemoModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       {/* Interactive Sandbox Section */}
       <section id="sandbox" className="landing-section bg-slate-50/70 border-y border-slate-200/80">
@@ -1181,7 +1212,7 @@ function LandingPage({
               onClick={() => setDemoModalOpen(true)}
               className="btn-secondary px-6 h-12 text-sm font-bold flex items-center gap-2"
             >
-              <Play size={16} /> Watch Remotion Walkthrough
+              <Play size={16} /> Watch Demo
             </button>
           </div>
         </div>

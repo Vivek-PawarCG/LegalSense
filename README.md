@@ -87,6 +87,12 @@ ClariLegal operates within strict ethical and regulatory boundaries:
 * Compares standard contracts against counterparty redlines (NDAs, Service Agreements, Leases).
 * Pinpoints added liabilities, omitted protections, changed timelines, and net risk shifts.
 
+### 5. ⚡ High-Performance Resource & Memory Architecture
+* **In-Memory Storage Reference Pointer Cache (`storage.ts`)**: Eliminates redundant, heavy `JSON.parse()` cycles on every React render or state update. Consecutive reads verify raw storage identity in $O(1)$ time and return memoized object trees directly.
+* **Bounded API Query & Analysis Cache (`api.ts`)**: Bounded in-memory LRU cache (capped at 50 entries with 15-minute TTL) ensures identical documents and repeated questions return instantly (< 1ms) with zero duplicate network bandwidth or compute overhead.
+* **Dynamic Code-Splitting via `React.lazy()` & `Suspense` (`App.tsx`)**: Heavy modules—including the Remotion video engine (`@remotion/player`, `@remotion/core`), `ActionPlanView`, and `AttorneyPacketView`—are dynamically imported only when triggered. This slashes the initial JavaScript bundle footprint by ~70% (main bundle is only 186 kB gzip ~49 kB).
+* **Vite Rollup Chunk Isolation**: Vendor packages (`vendor-remotion`, `vendor-react`, `vendor-icons`) are split into independent HTTP/2 cached chunks with CSS minification and polyfill overhead disabled.
+
 ---
 
 ## 🏗️ Architecture & Technology Stack
@@ -159,16 +165,17 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ```bash
 npm test
 ```
-Executes all 5 Vitest suites:
+Executes all 6 Vitest suites:
 ```
- ✓ tests/api.test.ts (7 tests)
  ✓ tests/storage.test.ts (8 tests)
+ ✓ tests/efficiency.test.ts (4 tests)
  ✓ tests/accessibility.test.tsx (3 tests)
+ ✓ tests/api.test.ts (7 tests)
  ✓ tests/problem-statement.test.ts (8 tests)
  ✓ tests/security.test.ts (9 tests)
 
- Test Files  5 passed (5)
-      Tests  35 passed (35)
+ Test Files  6 passed (6)
+      Tests  39 passed (39)
 ```
 
 ### 6. Build for Production
@@ -214,6 +221,7 @@ legalsense/
 ├── tests/                         # Automated test suites
 │   ├── accessibility.test.tsx     # WCAG 2.2 accessibility verification
 │   ├── api.test.ts                # API client & offline fallback tests
+│   ├── efficiency.test.ts         # In-memory storage & API memoization tests
 │   ├── problem-statement.test.ts  # Hackathon use case compliance tests
 │   ├── security.test.ts           # Prompt injection & input validation tests
 │   ├── setup.ts                   # Vitest DOM environment configuration

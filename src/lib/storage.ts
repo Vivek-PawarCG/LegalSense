@@ -826,10 +826,28 @@ export function ensureDocumentActionPlan(doc: StoredDocument): StoredDocument {
   return doc
 }
 
+let _cachedDocs: StoredDocument[] | null = null
+let _lastRawDocs: string | null = null
+
+export function invalidateDocsCache(): void {
+  _cachedDocs = null
+  _lastRawDocs = null
+}
+
 export function getUserDocuments(_userId?: string): StoredDocument[] {
   try {
     const raw = localStorage.getItem(DOCS_STORAGE_KEY)
-    if (!raw) return []
+    if (!raw) {
+      _cachedDocs = []
+      _lastRawDocs = null
+      return []
+    }
+
+    // High performance memory cache hit: skip JSON.parse and map processing
+    if (_cachedDocs && raw === _lastRawDocs) {
+      return _cachedDocs
+    }
+
     const docs: StoredDocument[] = JSON.parse(raw)
     if (!Array.isArray(docs)) return []
 
@@ -843,9 +861,14 @@ export function getUserDocuments(_userId?: string): StoredDocument[] {
     })
 
     if (updatedAny) {
-      localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(enriched))
+      const serialized = JSON.stringify(enriched)
+      localStorage.setItem(DOCS_STORAGE_KEY, serialized)
+      _lastRawDocs = serialized
+    } else {
+      _lastRawDocs = raw
     }
 
+    _cachedDocs = enriched
     return enriched
   } catch {
     return []
@@ -859,7 +882,7 @@ export function getDocumentById(id: string): StoredDocument | null {
 
 export function saveDocument(doc: StoredDocument, skipLog = false): void {
   ensureDocumentActionPlan(doc)
-  const docs = getUserDocuments()
+  const docs = [...getUserDocuments()]
   const idx = docs.findIndex(d => d.id === doc.id)
   const isNew = idx < 0
   if (idx >= 0) {
@@ -867,7 +890,11 @@ export function saveDocument(doc: StoredDocument, skipLog = false): void {
   } else {
     docs.unshift(doc)
   }
-  localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(docs))
+  const serialized = JSON.stringify(docs)
+  localStorage.setItem(DOCS_STORAGE_KEY, serialized)
+  _cachedDocs = docs
+  _lastRawDocs = serialized
+
   if (isNew && !skipLog) {
     logActivity('analyze', `Analyzed "${doc.name}" with ${doc.overallRisk} risk score`)
   }
@@ -877,7 +904,10 @@ export function deleteDocument(id: string): StoredDocument[] {
   const docs = getUserDocuments()
   const target = docs.find(d => d.id === id)
   const remaining = docs.filter(d => d.id !== id)
-  localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(remaining))
+  const serialized = JSON.stringify(remaining)
+  localStorage.setItem(DOCS_STORAGE_KEY, serialized)
+  _cachedDocs = remaining
+  _lastRawDocs = serialized
   if (target) {
     logActivity('delete', `Deleted document "${target.name}"`)
   }

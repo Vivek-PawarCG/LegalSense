@@ -313,6 +313,11 @@ function generateIntelligentChatResponse(message: string, context?: string) {
 export default defineConfig({
   plugins: [react(), tailwindcss(), clariLegalApiPlugin()],
   build: {
+    cssMinify: true,
+    cssCodeSplit: true,
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       output: {
         manualChunks(id: string) {
