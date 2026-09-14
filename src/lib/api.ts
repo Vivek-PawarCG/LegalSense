@@ -50,10 +50,14 @@ export async function analyzeDocument(
     throw new Error(e.message || 'Error processing document file.')
   }
 
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 9000)
+
   try {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         mode,
         fileName: file.name,
@@ -63,12 +67,14 @@ export async function analyzeDocument(
         customApiKey,
       }),
     })
+    clearTimeout(timeoutId)
 
     const body = await res.json()
     if (!res.ok) throw new Error(body.error || 'Analysis failed')
     return body
   } catch (err: any) {
-    console.warn('Backend API request failed or offline, engaging intelligent client fallback:', err?.message || err)
+    clearTimeout(timeoutId)
+    console.warn('Backend API request failed, timed out, or offline, engaging intelligent client fallback:', err?.message || err)
     return clientSideAnalysisFallback(file.name, mode)
   }
 }
@@ -77,10 +83,14 @@ export async function compareDocuments(a: File, b: File): Promise<AnalyzeResult>
   const customApiKey = getCustomApiKey() || undefined
   const [dataA, dataB] = await Promise.all([fileToBase64(a, 3_000_000), fileToBase64(b, 3_000_000)])
 
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 9500)
+
   try {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         mode: 'compare',
         fileName: `${a.name} vs ${b.name}`,
@@ -88,16 +98,17 @@ export async function compareDocuments(a: File, b: File): Promise<AnalyzeResult>
         mimeTypeB: b.type || 'application/pdf',
         dataA,
         dataB,
-        prompt: `Document A: ${a.name}\nDocument B: ${b.name}`,
         customApiKey,
       }),
     })
+    clearTimeout(timeoutId)
 
     const body = await res.json()
     if (!res.ok) throw new Error(body.error || 'Comparison failed')
     return body
   } catch (err: any) {
-    console.warn('Backend comparison failed, using intelligent client-side fallback:', err?.message || err)
+    clearTimeout(timeoutId)
+    console.warn('Backend compare request failed or offline, engaging client fallback:', err?.message || err)
     return clientSideAnalysisFallback(`${a.name} vs ${b.name}`, 'compare')
   }
 }

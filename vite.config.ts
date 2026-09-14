@@ -70,7 +70,9 @@ function clariLegalApiPlugin() {
                   let lastErr = null
                   for (const m of candidateModels) {
                     try {
-                      const response = await ai.models.generateContent({ model: m, contents: parts })
+                      const generatePromise = ai.models.generateContent({ model: m, contents: parts })
+                      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Model timeout')), 6000))
+                      const response: any = await Promise.race([generatePromise, timeoutPromise])
                       res.end(JSON.stringify({
                         ok: true,
                         mode,
@@ -82,9 +84,10 @@ function clariLegalApiPlugin() {
                       return
                     } catch (e: any) {
                       lastErr = e
+                      break // Fail fast so user doesn't wait through multiple timeouts
                     }
                   }
-                  console.warn('Live Gemini failed, using intelligent legal engine fallback:', lastErr?.message)
+                  console.warn('Live Gemini failed or timed out, using intelligent legal engine fallback:', lastErr?.message)
                 } catch (e) {
                   console.warn('Gemini client error, using intelligent legal engine fallback')
                 }
