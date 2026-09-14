@@ -657,4 +657,87 @@
   margin-top: 3px;
 }
 
+/* ==========================================================================
+   PRINT MEDIA STYLES - ATTORNEY BRIEFING PACKET & EXECUTIVE LEGAL DOSSIER
+   ========================================================================== */
+@media print {
+  /* 1. Eliminate all web app chrome, sidebars, topbars, buttons, and navigation */
+  aside,
+  .sidebar,
+  .mobile-top,
+  .print-hide,
+  .print\:hidden,
+  .toast,
+  .sr-only,
+  button,
+  input,
+  nav,
+  #tour-sidebar-nav,
+  .landing-header,
+  .landing-foot,
+  .dropzone {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
 
+  /* 2. Reset viewport locks so content paginates across real sheets instead of snapshotting viewport */
+  html,
+  body,
+  #root,
+  .flex,
+  .min-h-screen,
+  main,
+  #main-content {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 3. Executive Dossier Print Layout */
+  .print-dossier {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #ffffff !important;
+  }
+
+  /* 4. Avoid breaking individual cards or clauses across page boundaries */
+  section,
+  article,
+  blockquote,
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* 5. Clean print margins */
+  @page {
+    size: auto;
+    margin: 14mm 14mm 16mm 14mm;
+  }
+
+  /* 6. High-fidelity color reproduction */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

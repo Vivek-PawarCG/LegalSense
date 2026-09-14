@@ -18,7 +18,6 @@ import {
 } from 'lucide-react'
 import { StoredDocument } from '../../types/legal'
 import { generateAttorneyBriefing, ensureDocumentActionPlan } from '../../lib/storage'
-import { MarkdownResponse } from '../MarkdownResponse'
 
 interface AttorneyPacketViewProps {
   doc: StoredDocument
@@ -67,8 +66,8 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto px-4 py-2" role="region" aria-label="Attorney Consultation Briefing Packet">
-      {/* Top Action & Navigation Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs print:hidden">
+      {/* Top Action & Navigation Header (Excluded from Print via .print-hide) */}
+      <div className="print-hide flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <button
           onClick={onBack}
           className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1"
@@ -134,9 +133,9 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
       </div>
 
       {/* Main Printable Dossier Container */}
-      <article className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-8 print:shadow-none print:border-none print:p-0">
+      <article className="print-dossier bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-8">
         {/* Document Header & Metadata Strip */}
-        <header className="border-b border-slate-200 pb-6 space-y-4">
+        <header className="border-b border-slate-200 pb-6 space-y-4 print-avoid-break">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3.5">
               <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center border border-indigo-100 shadow-xs">
@@ -192,7 +191,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
         </header>
 
         {/* Ethical Purpose & Safe AI Notice */}
-        <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-900 leading-relaxed shadow-2xs">
+        <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-900 leading-relaxed shadow-2xs print-avoid-break">
           <p className="flex items-start gap-2.5">
             <Shield className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" aria-hidden="true" />
             <span>
@@ -205,7 +204,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
         {viewMode === 'dossier' ? (
           <div className="space-y-8">
             {/* Section 1: Executive Summary */}
-            <section className="space-y-3.5">
+            <section className="space-y-3.5 print-avoid-break">
               <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
                 <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center">
                   1
@@ -235,7 +234,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
             {/* Section 2: Critical & High-Risk Provisions */}
             <section className="space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100 print-avoid-break">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 font-black text-xs flex items-center justify-center">
                     2
@@ -253,7 +252,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
                 {highRiskClauses.map((clause, idx) => (
                   <div
                     key={clause.id || idx}
-                    className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow overflow-hidden"
+                    className="print-avoid-break bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow overflow-hidden"
                   >
                     {/* Clause Header Strip */}
                     <div className="px-5 py-3.5 bg-slate-50/90 border-b border-slate-200/80 flex items-center justify-between gap-3">
@@ -325,7 +324,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
             {/* Section 3: Potential Inconsistencies & Asymmetric Obligations */}
             {inconsistencies.length > 0 && (
-              <section className="space-y-3">
+              <section className="space-y-3 print-avoid-break">
                 <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
                   <span className="w-6 h-6 rounded-lg bg-amber-100 text-amber-800 font-black text-xs flex items-center justify-center">
                     3
@@ -353,7 +352,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
             {/* Section 4: Prioritized Questions to Ask Your Attorney */}
             <section className="space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100 print-avoid-break">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center">
                     4
@@ -362,7 +361,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
                     Prioritized Questions to Ask Your Attorney
                   </h2>
                 </div>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-slate-500 print-hide">
                   Click to copy any question into your meeting notes
                 </span>
               </div>
@@ -371,7 +370,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
                 {questions.map((q, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50/80 hover:bg-indigo-50/40 border border-slate-200/80 hover:border-indigo-200 transition-all text-xs text-slate-900 group"
+                    className="print-avoid-break flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50/80 hover:bg-indigo-50/40 border border-slate-200/80 hover:border-indigo-200 transition-all text-xs text-slate-900 group"
                   >
                     <div className="flex items-start gap-3 min-w-0">
                       <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center shrink-0 text-[10px] mt-0.5">
@@ -382,7 +381,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
                     <button
                       onClick={() => handleCopySingleQuestion(q, idx)}
-                      className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-white transition-all print:hidden focus-visible:ring-2 focus-visible:ring-indigo-500"
+                      className="print-hide shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-white transition-all focus-visible:ring-2 focus-visible:ring-indigo-500"
                       title="Copy question to clipboard"
                       aria-label={`Copy question ${idx + 1}`}
                     >
@@ -399,7 +398,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
             {/* Section 5: Recommended Next Steps & Options */}
             {options.length > 0 && (
-              <section className="space-y-3.5">
+              <section className="space-y-3.5 print-avoid-break">
                 <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
                   <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center">
                     5
@@ -411,7 +410,7 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {options.map((opt, i) => (
-                    <div key={i} className="bg-slate-50/60 p-4 rounded-2xl border border-slate-200/80 flex flex-col justify-between">
+                    <div key={i} className="print-avoid-break bg-slate-50/60 p-4 rounded-2xl border border-slate-200/80 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
@@ -435,6 +434,11 @@ export function AttorneyPacketView({ doc, onBack }: AttorneyPacketViewProps) {
                 </div>
               </section>
             )}
+
+            {/* Printable Footnote Docket */}
+            <div className="hidden print:block pt-6 border-t border-slate-200 text-center text-[10px] text-slate-400 font-medium">
+              Confidential & Privileged Client Preparation Material • Prepared via ClariLegal AI Assistant
+            </div>
           </div>
         ) : (
           /* VIEW MODE 2: RAW MARKDOWN SOURCE PREVIEW */
