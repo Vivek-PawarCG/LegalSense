@@ -16,7 +16,7 @@ describe('API Client & Key Management', () => {
   })
 
   it('validates and stores a valid custom API key', () => {
-    const validKey = 'AIzaSyC2MFhL7dXETrAjJaOW4TMpuo47omvBMcY'
+    const validKey = 'AIza..C................'
     const success = setCustomApiKey(validKey)
     expect(success).toBe(true)
     expect(getCustomApiKey()).toBe(validKey)
@@ -30,7 +30,7 @@ describe('API Client & Key Management', () => {
   })
 
   it('clears API key when setting an empty string', () => {
-    setCustomApiKey('AIzaSyC2MFhL7dXETrAjJaOW4TMpuo47omvBMcY')
+    setCustomApiKey('AIza..C2M...............')
     expect(getCustomApiKey()).not.toBeNull()
     setCustomApiKey('   ')
     expect(getCustomApiKey()).toBeNull()
